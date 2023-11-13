@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 import axios from "axios";
 
 function App() {
@@ -23,7 +22,10 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">{testStr}</header>
+      <header className="App-header bg-red-500 text-red-400 bg-primary">
+        {testStr}
+      </header>
+      <h1 className="btn btn-accent btn-outline">asdf</h1>
     </div>
   );
 }
