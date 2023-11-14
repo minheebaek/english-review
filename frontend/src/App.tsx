@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import Layout from "./components/common/layout";
 import Navbar from "./components/common/navbar";
 
 function App() {
@@ -22,7 +21,7 @@ function App() {
   // }, []);
 
   return (
-    <div className="relative">
+    <div className="">
       <Navbar />
       <Outlet />
     </div>
