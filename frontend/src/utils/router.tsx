@@ -41,7 +41,7 @@ export const router = createBrowserRouter([
 export const navbarRoutes = [
   {
     label: "홈",
-    pathname: "/",
+    pathname: "/home",
   },
   {
     label: "마이 스터디",

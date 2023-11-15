@@ -1,5 +1,7 @@
-import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "./components/common/navbar";
+import Footer from "./components/common/foonter";
 
 function App() {
   // // 요청 받은 정보를 담아줄 변수 선언
@@ -20,10 +22,16 @@ function App() {
   //   });
   // }, []);
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate("/home", { replace: false });
+  }, [navigate]);
+
   return (
-    <div className="">
+    <div className="relative">
       <Navbar />
       <Outlet />
+      <Footer />
     </div>
   );
 }
