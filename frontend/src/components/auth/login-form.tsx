@@ -1,38 +1,65 @@
+import { useState } from "react";
+
 import axios from "axios";
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { AuthType, FormData } from "../../pages/auth";
 
 interface LoginFormProps {
-  formData: FormData;
   setAuth: (type: AuthType) => void;
-  setFormData: React.Dispatch<React.SetStateAction<FormData>>;
-  reset: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({
-  formData,
-  setFormData,
-  reset,
-  setAuth,
-}) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+const LoginForm: React.FC<LoginFormProps> = ({ setAuth }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [formData, setFormData] = useState<FormData>({
+    username: "",
+    password: "",
+  });
+
+  const reset = () => {
+    setFormData({
+      username: "",
+      password: "",
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // 서버와 통신 시작
-    console.log(formData);
-    axios
-      .post(
-        "http://localhost:8080/api/login",
-        {
-          formData,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
+
+    try {
+      setIsLoading(true);
+      const loginData = await axios
+        .post(
+          "http://localhost:8080/api/login",
+          {
+            formData,
           },
-        }
-      )
-      .then((data) => console.log(data))
-      .catch((e) => console.log(e));
-    reset();
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((data) => data);
+      console.log(loginData);
+      toast.success("로그인에 성공하셨습니다.", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("로그인 실패", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+    } finally {
+      setIsLoading(false);
+      reset();
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,10 +77,11 @@ const LoginForm: React.FC<LoginFormProps> = ({
           name="username"
           type="email"
           placeholder="example@naver.com"
-          className="input input-primary input-bordered w-full"
+          className={"input input-primary input-bordered w-full"}
           value={formData.username}
           onChange={handleChange}
           required
+          disabled={isLoading}
         />
       </div>
       <div className="form-control w-full">
@@ -64,13 +92,18 @@ const LoginForm: React.FC<LoginFormProps> = ({
           name="password"
           type="password"
           placeholder="**********"
-          className="input input-primary input-bordered w-full"
+          className={"input input-primary input-bordered w-full"}
           value={formData.password}
           required
           onChange={handleChange}
+          disabled={isLoading}
         />
       </div>
-      <button type="submit" className="mt-4 btn btn-primary w-full">
+      <button
+        disabled={isLoading}
+        type="submit"
+        className="mt-4 btn btn-primary w-full text-white"
+      >
         로그인
       </button>
       <div className="mt-4 flex items-center gap-x-3">

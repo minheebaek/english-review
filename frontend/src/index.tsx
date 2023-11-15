@@ -1,9 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+
 import { RouterProvider } from "react-router-dom";
-import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+
+import { ToastContainer } from "react-toastify";
+
 import { router } from "./utils/router";
+import "./index.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -11,6 +15,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
+    <ToastContainer />
     <RouterProvider router={router} />
   </React.StrictMode>
 );

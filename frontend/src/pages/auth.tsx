@@ -13,23 +13,12 @@ export interface FormData {
 export default function Auth() {
   const [auth, setAuth] = useState<AuthType>("login");
 
-  const [formData, setFormData] = useState<FormData>({
-    username: "",
-    password: "",
-  });
-
   const changeAuth = (type: AuthType) => {
     setAuth(type);
   };
 
-  const reset = () => {
-    setFormData({
-      username: "",
-      password: "",
-    });
-  };
   return (
-    <div className="p-4 relative h-screen flex items-center justify-center">
+    <div className="p-4 relative h-screen flex items-center justify-center overflow-x-hidden">
       <div className="absolute custom-shape-divider-top-1700027138">
         <svg
           data-name="Layer 1"
@@ -48,15 +37,8 @@ export default function Auth() {
         <p className="text-center">
           즐거운 영어 복습의 시작 REVIEW US와 함께하세요!
         </p>
-        {auth === "login" && (
-          <LoginForm
-            setAuth={changeAuth}
-            formData={formData}
-            reset={reset}
-            setFormData={setFormData}
-          />
-        )}
-        {auth === "register" && <RegisterForm />}
+        {auth === "login" && <LoginForm setAuth={changeAuth} />}
+        {auth === "register" && <RegisterForm setAuth={changeAuth} />}
       </div>
     </div>
   );

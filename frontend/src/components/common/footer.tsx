@@ -2,7 +2,7 @@ import React from "react";
 import Layout from "./layout";
 import { Link } from "react-router-dom";
 import { navbarRoutes } from "../../utils/router";
-import { Facebook, Github, Instagram, Mail } from "lucide-react";
+import { Facebook, Github, Instagram } from "lucide-react";
 
 const Footer = () => {
   return (

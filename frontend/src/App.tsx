@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "./components/common/navbar";
-import Footer from "./components/common/foonter";
+import Footer from "./components/common/footer";
 
 function App() {
   // // 요청 받은 정보를 담아줄 변수 선언
