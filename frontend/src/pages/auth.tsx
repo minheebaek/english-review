@@ -29,7 +29,7 @@ export default function Auth() {
     });
   };
   return (
-    <div className="relative h-screen flex items-center justify-center">
+    <div className="p-4 relative h-screen flex items-center justify-center">
       <div className="absolute custom-shape-divider-top-1700027138">
         <svg
           data-name="Layer 1"
@@ -44,8 +44,10 @@ export default function Auth() {
         </svg>
       </div>
       <div className="flex flex-col items-center justify-center border rounded-3xl py-12 px-16 z-10 bg-white shadow-md">
-        <h1 className="text-2xl font-bold uppercase">Review US</h1>
-        <p className="">즐거운 영어 복습의 시작 REVIEW US와 함께하세요!</p>
+        <h1 className="text-center text-2xl font-bold uppercase">Review US</h1>
+        <p className="text-center">
+          즐거운 영어 복습의 시작 REVIEW US와 함께하세요!
+        </p>
         {auth === "login" && (
           <LoginForm
             setAuth={changeAuth}

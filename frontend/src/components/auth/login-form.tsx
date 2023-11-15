@@ -1,3 +1,4 @@
+import axios from "axios";
 import { AuthType, FormData } from "../../pages/auth";
 
 interface LoginFormProps {
@@ -13,7 +14,31 @@ const LoginForm: React.FC<LoginFormProps> = ({
   reset,
   setAuth,
 }) => {
-  const handleSubmit = () => {};
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // 서버와 통신 시작
+    console.log(formData);
+    axios
+      .post(
+        "http://localhost:8080/api/login",
+        {
+          formData,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((data) => console.log(data))
+      .catch((e) => console.log(e));
+    reset();
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   return (
     <form className="mt-8 w-full" onSubmit={handleSubmit}>
@@ -26,6 +51,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
           type="email"
           placeholder="example@naver.com"
           className="input input-primary input-bordered w-full"
+          value={formData.username}
+          onChange={handleChange}
+          required
         />
       </div>
       <div className="form-control w-full">
@@ -33,10 +61,13 @@ const LoginForm: React.FC<LoginFormProps> = ({
           <span className="label-text font-bold">비밀번호</span>
         </label>
         <input
-          name="username"
+          name="password"
           type="password"
           placeholder="**********"
           className="input input-primary input-bordered w-full"
+          value={formData.password}
+          required
+          onChange={handleChange}
         />
       </div>
       <button type="submit" className="mt-4 btn btn-primary w-full">
