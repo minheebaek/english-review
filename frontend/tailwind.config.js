@@ -12,13 +12,13 @@ module.exports = {
         mytheme: {
           primary: "#5964E0",
           secondary: "#91A7FF",
-          accent: "#fff",
+          accent: "#00D389",
           neutral: "#757575",
           "base-100": "#FAFAFA",
-          info: "#fff",
-          success: "#fff",
-          warning: "#fff",
-          error: "#fff",
+          info: "#00D389",
+          success: "#00D389",
+          warning: "#FFBE00",
+          error: "#FF5861",
           "--rounded-box": "1rem", // border radius rounded-box utility class, used in card and other large boxes
           "--rounded-btn": "0.5rem", // border radius rounded-btn utility class, used in buttons and similar element
           "--rounded-badge": "1.9rem", // border radius rounded-badge utility class, used in badges and similar

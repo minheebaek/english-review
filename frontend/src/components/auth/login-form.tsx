@@ -34,7 +34,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ setAuth }) => {
       setIsLoading(true);
       const loginData = await axios
         .post(
-          "http://localhost:8080/api/login",
+          "http://localhost:8080/api/signin",
           {
             formData,
           },

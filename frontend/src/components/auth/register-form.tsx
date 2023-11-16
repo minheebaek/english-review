@@ -3,171 +3,163 @@ import { useState } from "react";
 import axios from "axios";
 
 import { toast } from "react-toastify";
-
+import { useForm } from "react-hook-form";
 import { AuthType } from "../../pages/auth";
 
 interface RegisterFormProps {
   setAuth: (type: AuthType) => void;
 }
 
+type FormData = {
+  nickname: string;
+  username: string;
+  password: string;
+  passwordConfirm: string;
+};
+
 const RegisterForm: React.FC<RegisterFormProps> = ({ setAuth }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
-
-  const [formData, setFormData] = useState({
-    nickname: "",
-    username: "",
-    password: "",
-    passwordConfirm: "",
-  });
-
-  const reset = () => {
-    setFormData({
-      nickname: "",
-      username: "",
-      password: "",
-      passwordConfirm: "",
-    });
-    setErrorMsg("");
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const validatePassword = (password: string) => {
-    const minLength = 8;
-    const hasNumber = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    if (minLength <= password.length && hasNumber && hasSpecialChar) {
-      return true;
-    }
-    return false;
-  };
-
-  const validateForm = () => {
-    const { nickname, username, password, passwordConfirm } = formData;
-
-    if (!nickname || !username || !password || !passwordConfirm) {
-      setErrorMsg("모든 필드가 입력되어야 합니다.");
-      return false;
-    }
-
-    if (validatePassword(password)) {
-      setErrorMsg(
-        "비밀번호는 숫자와 영문 8글자 이상 특수문자가 포함되어야 합니다."
-      );
-      return false;
-    }
-
-    if (password !== passwordConfirm) {
-      setErrorMsg("비밀번호가 일치하지 않습니다.");
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // 서버와 통신 시작
-
-    if (validateForm()) {
-      try {
-        setIsLoading(true);
-        const loginData = await axios
-          .post(
-            "http://localhost:8080/api/login",
-            {
-              formData,
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    watch,
+  } = useForm<FormData>();
+  const onSubmit = async (data: FormData) => {
+    try {
+      setIsLoading(true);
+      const loginData = await axios
+        .post(
+          "http://localhost:8080/api/signup",
+          {
+            data,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
             },
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          )
-          .then((data) => data);
-        console.log(loginData);
-        toast.success("로그인에 성공하셨습니다.", {
-          position: "top-center",
-          autoClose: 3000,
-        });
-      } catch (error) {
-        console.log(error);
-        toast.error("로그인 실패", {
-          position: "top-center",
-          autoClose: 3000,
-        });
-      } finally {
-        setIsLoading(false);
-        reset();
-      }
+          }
+        )
+        .then((data) => data);
+      console.log(loginData);
+      toast.success("로그인에 성공하셨습니다.", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("로그인 실패", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <form className="mt-8 w-full" onSubmit={handleSubmit}>
+    <form className="mt-8 w-full" onSubmit={handleSubmit(onSubmit)}>
       <div className="form-control w-full">
         <label className="label">
           <span className="label-text font-bold">닉네임</span>
         </label>
         <input
-          name="nickname"
           type="text"
           placeholder="열심이"
           className="input input-primary input-bordered w-full"
-          value={formData.nickname}
-          onChange={handleChange}
           disabled={isLoading}
-          required
+          {...register("nickname", {
+            required: "닉네임을 입력해 주세요",
+            minLength: {
+              value: 2,
+              message: "최소 2글자 이상 입력해야 합니다.",
+            },
+            maxLength: {
+              value: 15,
+              message: "15글자 이상은 입력하실 수 없습니다.",
+            },
+          })}
         />
+        <label className="label">
+          <span className="label-text-alt text-error">
+            {errors.nickname?.message}
+          </span>
+        </label>
       </div>
       <div className="form-control w-full">
         <label className="label">
           <span className="label-text font-bold">이메일</span>
         </label>
         <input
-          name="username"
           type="email"
           placeholder="example@naver.com"
           className="input input-primary input-bordered w-full"
-          value={formData.username}
-          onChange={handleChange}
           disabled={isLoading}
-          required
+          {...register("username", {
+            required: "이메일을 입력해 주세요",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "유효한 이메일 형식이 아닙니다.",
+            },
+          })}
         />
+        <label className="label">
+          <span className="label-text-alt text-error">
+            {errors.username?.message}
+          </span>
+        </label>
       </div>
       <div className="form-control w-full">
         <label className="label">
           <span className="label-text font-bold">비밀번호</span>
         </label>
         <input
-          name="password"
           type="password"
           placeholder="**********"
           className="input input-primary input-bordered w-full"
-          value={formData.password}
-          required
-          onChange={handleChange}
+          {...register("password", {
+            required: "비밀번호를 입력해 주세요",
+            minLength: {
+              value: 8,
+              message: "비밀번호는 8글자 이상이어야 합니다.",
+            },
+            pattern: {
+              value:
+                /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/,
+              message: "비밀번호는 영문, 숫자, 특수문자를 포함해야 합니다.",
+            },
+          })}
           disabled={isLoading}
         />
+        <label className="label">
+          <span className="label-text-alt text-error">
+            {errors.password?.message}
+          </span>
+        </label>
       </div>
       <div className="form-control w-full">
         <label className="label">
           <span className="label-text font-bold">비밀번호 확인</span>
         </label>
         <input
-          name="passwordConfirm"
           type="password"
           placeholder="**********"
           className="input input-primary input-bordered w-full"
-          value={formData.passwordConfirm}
-          required
-          onChange={handleChange}
+          {...register("passwordConfirm", {
+            required: "비밀번호 확인을 입력해 주세요",
+            validate: (val: string) => {
+              if (watch("password") !== val) {
+                return "비밀번호가 일치하지 않습니다.";
+              }
+            },
+          })}
           disabled={isLoading}
         />
+        <label className="label">
+          <span className="label-text-alt text-error">
+            {errors.passwordConfirm?.message}
+          </span>
+        </label>
       </div>
       <button
         type="submit"
