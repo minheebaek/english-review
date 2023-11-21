@@ -25,6 +25,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setAuth }) => {
     handleSubmit,
     watch,
   } = useForm<FormData>();
+
   const onSubmit = async (data: FormData) => {
     try {
       setIsLoading(true);

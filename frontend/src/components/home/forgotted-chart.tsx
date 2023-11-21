@@ -16,32 +16,6 @@ const ForgottedChart = () => {
     },
   ];
 
-  const options = {
-    colors: ["#0fbcf9"],
-    theme: {
-      mode: "dark",
-    },
-    chart: {
-      toolbar: {
-        show: false,
-      },
-      background: "transparent",
-    },
-    grid: { show: false },
-    stroke: {
-      curve: "smooth",
-      width: 2,
-    },
-    yaxis: {
-      show: false,
-    },
-    xaxis: {
-      axisBorder: { show: false },
-      axisTicks: { show: false },
-      labels: { show: false },
-      type: "datetime",
-    },
-  };
   return (
     <div className="w-full lg:max-w-md">
       <ApexChart

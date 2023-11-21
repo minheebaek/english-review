@@ -18,7 +18,7 @@ export default function Auth() {
   };
 
   return (
-    <div className="p-4 relative h-screen flex items-center justify-center overflow-x-hidden">
+    <div className="p-4 relative h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute custom-shape-divider-top-1700027138">
         <svg
           data-name="Layer 1"

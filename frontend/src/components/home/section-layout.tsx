@@ -58,7 +58,7 @@ const SectionLayout: React.FC<SectionLayoutProps> = ({
             <ForgottedChart />
           )}
 
-          <div className="flex flex-col items-center text-center">
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
             <h1 className="text-3xl sm:text-5xl font-bold max-w-sm lg:leading-[58px]">
               {title?.split("\n")?.map((line, index) => (
                 <React.Fragment key={index}>

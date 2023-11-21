@@ -1,18 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
+import { useAuthentication } from "../../recoil/auth-state";
+
+import { AuthType, FormData } from "../../pages/auth";
+import { signIn } from "../../apis/auth";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { AuthType, FormData } from "../../pages/auth";
 
 interface LoginFormProps {
   setAuth: (type: AuthType) => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ setAuth }) => {
+const LoginForm: React.FC<LoginFormProps> = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuthentication();
 
   const [formData, setFormData] = useState<FormData>({
     username: "",
@@ -28,31 +32,41 @@ const LoginForm: React.FC<LoginFormProps> = ({ setAuth }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // 서버와 통신 시작
 
     try {
       setIsLoading(true);
-      const loginData = await axios
-        .post(
-          "http://localhost:8080/api/signin",
-          {
-            formData,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((data) => data);
-      console.log(loginData);
-      toast.success("로그인에 성공하셨습니다.", {
-        position: "top-center",
-        autoClose: 3000,
-      });
+      const res = await signIn(formData.username, formData.password);
+      if (res.code === "SU") {
+        // 로그인 성공 시 토큰 저장
+        login(res.token);
+        toast.success("로그인에 성공하셨습니다.", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+      } else {
+        switch (res.code) {
+          case "VF":
+            toast.error("아이디와 비밀번호가 일치하지 않습니다.", {
+              position: "top-center",
+              autoClose: 3000,
+            });
+            break;
+          case "SF":
+            toast.error("아이디와 비밀번호가 일치하지 않습니다.", {
+              position: "top-center",
+              autoClose: 3000,
+            });
+            break;
+          case "DBE":
+            toast.error("서버에서 에러가 발생하였습니다.", {
+              position: "top-center",
+              autoClose: 3000,
+            });
+            break;
+        }
+      }
     } catch (error) {
-      console.log(error);
-      toast.error("로그인 실패", {
+      toast.error("네트워크 에러가 발생하였습니다.", {
         position: "top-center",
         autoClose: 3000,
       });
@@ -110,7 +124,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ setAuth }) => {
         <p className="text-xs text-neutral">아직 계정이 없으신가요?</p>
         <span
           className="link-primary text-xs cursor-pointer"
-          onClick={() => setAuth("register")}
+          onClick={() => navigate("register")}
         >
           회원가입
         </span>
