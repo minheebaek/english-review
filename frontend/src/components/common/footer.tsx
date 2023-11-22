@@ -1,7 +1,7 @@
 import React from "react";
 import Layout from "./layout";
 import { Link } from "react-router-dom";
-import { navbarRoutes } from "../../utils/router";
+import { navbarRoutes } from "../../utils/routes-info";
 import { Facebook, Github, Instagram } from "lucide-react";
 
 const Footer = () => {

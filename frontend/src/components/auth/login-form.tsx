@@ -38,7 +38,7 @@ const LoginForm: React.FC<LoginFormProps> = () => {
       const res = await signIn(formData.username, formData.password);
       if (res.code === "SU") {
         // 로그인 성공 시 토큰 저장
-        login(res.token);
+        login(res.token, res.expirationTime);
         toast.success("로그인에 성공하셨습니다.", {
           position: "top-center",
           autoClose: 3000,

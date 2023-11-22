@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useMatch, useParams } from "react-router-dom";
 import Navbar from "./components/common/navbar";
 import Footer from "./components/common/footer";
+import Home from "./pages/home";
 
 function App() {
   // // 요청 받은 정보를 담아줄 변수 선언
@@ -22,15 +22,12 @@ function App() {
   //   });
   // }, []);
 
-  const navigate = useNavigate();
-  useEffect(() => {
-    navigate("/home", { replace: false });
-  }, [navigate]);
+  const pathInfo = useMatch("/");
 
   return (
     <div className="relative">
       <Navbar />
-      <Outlet />
+      {pathInfo?.pathname === "/" ? <Home /> : <Outlet />}
       <Footer />
     </div>
   );

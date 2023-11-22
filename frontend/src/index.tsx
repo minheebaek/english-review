@@ -1,17 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-
-import { RouterProvider } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
-
-import { RecoilRoot } from "recoil";
+import "./index.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+import { RecoilRoot } from "recoil";
+
 import { ToastContainer } from "react-toastify";
 
-import { router } from "./utils/router";
-import "./index.css";
+import Routes from "./routes/routes";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -22,10 +20,10 @@ const queryClient = new QueryClient();
 
 root.render(
   <React.StrictMode>
-    <ToastContainer />
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
-        <RouterProvider router={router} />
+        <ToastContainer />
+        <Routes />
       </RecoilRoot>
     </QueryClientProvider>
   </React.StrictMode>

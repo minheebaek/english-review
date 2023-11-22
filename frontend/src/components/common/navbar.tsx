@@ -6,7 +6,7 @@ import { Menu, X } from "lucide-react";
 
 import "./animation.css";
 
-import { navbarRoutes } from "../../utils/router";
+import { navbarRoutes } from "../../utils/routes-info";
 
 import Layout from "./layout";
 
