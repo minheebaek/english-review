@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-import axios from "axios";
-
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { AuthType } from "../../pages/auth";
@@ -41,6 +39,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setAuth }) => {
 
       if (res.code === "SU") {
         showToastByCode("SU", "회원가입에 성공하였습니다.");
+        setAuth("login");
       } else {
         showToastByCode("VF");
       }

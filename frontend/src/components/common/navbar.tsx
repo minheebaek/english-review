@@ -42,7 +42,7 @@ const Navbar = () => {
             <div className={clsx("w-1/2 h-full bg-primary px-5 pt-6")}>
               <div className="flex justify-between">
                 <Link
-                  to={"/home"}
+                  to={"/"}
                   onClick={toggleNavbarOpen}
                   className="uppercase text-lg"
                 >

@@ -46,6 +46,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ setAuth }) => {
         // 로그인 성공 시 토큰 저장
         login(res.token, res.expirationTime);
         showToastByCode(res.code, "로그인에 성공하였습니다.");
+        navigate("/");
       } else {
         showToastByCode("VF");
       }

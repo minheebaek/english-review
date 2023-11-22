@@ -10,8 +10,8 @@ const Footer = () => {
       <Layout>
         <div className="flex justify-between items-center">
           <Link
-            to={"/home"}
-            className="flex-initial lg:flex-1 text-lg uppercase"
+            to={"/"}
+            className="flex-initial lg:flex-1 text-lg uppercase font-bold"
           >
             Review us
           </Link>
@@ -39,9 +39,18 @@ const Footer = () => {
             {`Copyright ${new Date().getFullYear()}. All Rights Reserved`}
           </div>
           <div className="flex gap-x-3">
-            <Facebook size={20} className="btn-circle btn-xs cursor-pointer" />
-            <Github size={20} className="btn-circle btn-xs cursor-pointer" />
-            <Instagram size={20} className="btn-circle btn-xs cursor-pointer" />
+            <Facebook
+              size={20}
+              className="btn-circle btn-xs cursor-pointer hover:text-blue-600 transition-colors"
+            />
+            <Github
+              size={20}
+              className="btn-circle btn-xs cursor-pointer hover:text-violet-600 transition-colors"
+            />
+            <Instagram
+              size={20}
+              className="btn-circle btn-xs cursor-pointer hover:text-pink-600 transition-colors"
+            />
           </div>
         </div>
       </Layout>
