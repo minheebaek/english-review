@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuthentication } from "../../recoil/auth-state";
@@ -8,12 +8,13 @@ import { signIn } from "../../apis/auth";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { showToastByCode } from "../../utils/response";
 
 interface LoginFormProps {
   setAuth: (type: AuthType) => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = () => {
+const LoginForm: React.FC<LoginFormProps> = ({ setAuth }) => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuthentication();
@@ -35,35 +36,18 @@ const LoginForm: React.FC<LoginFormProps> = () => {
 
     try {
       setIsLoading(true);
-      const res = await signIn(formData.username, formData.password);
+      // const res = await signIn(formData.username, formData.password);
+      const res = {
+        token: "Asdfsf",
+        code: "VF",
+        expirationTime: 2133,
+      };
       if (res.code === "SU") {
         // 로그인 성공 시 토큰 저장
         login(res.token, res.expirationTime);
-        toast.success("로그인에 성공하셨습니다.", {
-          position: "top-center",
-          autoClose: 3000,
-        });
+        showToastByCode(res.code, "로그인에 성공하였습니다.");
       } else {
-        switch (res.code) {
-          case "VF":
-            toast.error("아이디와 비밀번호가 일치하지 않습니다.", {
-              position: "top-center",
-              autoClose: 3000,
-            });
-            break;
-          case "SF":
-            toast.error("아이디와 비밀번호가 일치하지 않습니다.", {
-              position: "top-center",
-              autoClose: 3000,
-            });
-            break;
-          case "DBE":
-            toast.error("서버에서 에러가 발생하였습니다.", {
-              position: "top-center",
-              autoClose: 3000,
-            });
-            break;
-        }
+        showToastByCode("VF");
       }
     } catch (error) {
       toast.error("네트워크 에러가 발생하였습니다.", {
@@ -124,7 +108,7 @@ const LoginForm: React.FC<LoginFormProps> = () => {
         <p className="text-xs text-neutral">아직 계정이 없으신가요?</p>
         <span
           className="link-primary text-xs cursor-pointer"
-          onClick={() => navigate("register")}
+          onClick={() => setAuth("register")}
         >
           회원가입
         </span>

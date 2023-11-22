@@ -5,6 +5,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { AuthType } from "../../pages/auth";
+import { showToastByCode } from "../../utils/response";
+import { signUp } from "../../apis/auth";
+import { removeProperty } from "../../utils/common";
 
 interface RegisterFormProps {
   setAuth: (type: AuthType) => void;
@@ -12,7 +15,7 @@ interface RegisterFormProps {
 
 type FormData = {
   nickname: string;
-  username: string;
+  email: string;
   password: string;
   passwordConfirm: string;
 };
@@ -29,27 +32,20 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setAuth }) => {
   const onSubmit = async (data: FormData) => {
     try {
       setIsLoading(true);
-      const loginData = await axios
-        .post(
-          "http://localhost:8080/api/signup",
-          {
-            data,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((data) => data);
-      console.log(loginData);
-      toast.success("로그인에 성공하셨습니다.", {
-        position: "top-center",
-        autoClose: 3000,
-      });
+      // const res = await signUp(removeProperty(data, "passwordConfirm"));
+      const res = {
+        token: "Asdfsf",
+        code: "VF",
+        expirationTime: 2133,
+      };
+
+      if (res.code === "SU") {
+        showToastByCode("SU", "회원가입에 성공하였습니다.");
+      } else {
+        showToastByCode("VF");
+      }
     } catch (error) {
-      console.log(error);
-      toast.error("로그인 실패", {
+      toast.error("서버 에러", {
         position: "top-center",
         autoClose: 3000,
       });
@@ -96,7 +92,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setAuth }) => {
           placeholder="example@naver.com"
           className="input input-primary input-bordered w-full"
           disabled={isLoading}
-          {...register("username", {
+          {...register("email", {
             required: "이메일을 입력해 주세요",
             pattern: {
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -106,7 +102,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setAuth }) => {
         />
         <label className="label">
           <span className="label-text-alt text-error">
-            {errors.username?.message}
+            {errors.email?.message}
           </span>
         </label>
       </div>
@@ -123,6 +119,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setAuth }) => {
             minLength: {
               value: 8,
               message: "비밀번호는 8글자 이상이어야 합니다.",
+            },
+            maxLength: {
+              value: 25,
+              message: "25글자 이상은 입력하실 수 없습니다.",
             },
             pattern: {
               value:
