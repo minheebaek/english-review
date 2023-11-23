@@ -6,14 +6,14 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div
+    <section
       className="w-full bg-primary mx-auto
         sm:w-[90%]
         max-w-[120rem]
     "
     >
       {children}
-    </div>
+    </section>
   );
 };
 

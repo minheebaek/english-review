@@ -3,7 +3,7 @@ import { atom, useSetRecoilState } from "recoil";
 
 export const tokenState = atom<string | null>({
   key: "tokenState",
-  default: "asdf",
+  default: "asdfasdfs",
 });
 
 export const useAuthentication = () => {
