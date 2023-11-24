@@ -3,9 +3,11 @@ package com.example.backend.dto.response.auth;
 import com.example.backend.common.ResponseCode;
 import com.example.backend.common.ResponseMessage;
 import com.example.backend.dto.response.ResponseDto;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+@Getter
 public class SignInResponseDto extends ResponseDto {
     private String token;
     private int expirationTime;
