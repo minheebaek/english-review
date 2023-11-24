@@ -36,12 +36,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ setAuth }) => {
 
     try {
       setIsLoading(true);
-      // const res = await signIn(formData.username, formData.password);
-      const res = {
-        token: "Asdfsf",
-        code: "VF",
-        expirationTime: 2133,
-      };
+      const res = await signIn(formData.username, formData.password);
       if (res.code === "SU") {
         // 로그인 성공 시 토큰 저장
         login(res.token, res.expirationTime);

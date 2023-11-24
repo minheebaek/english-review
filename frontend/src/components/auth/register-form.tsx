@@ -30,13 +30,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setAuth }) => {
   const onSubmit = async (data: FormData) => {
     try {
       setIsLoading(true);
-      // const res = await signUp(removeProperty(data, "passwordConfirm"));
-      const res = {
-        token: "Asdfsf",
-        code: "VF",
-        expirationTime: 2133,
-      };
-
+      const res = await signUp(removeProperty(data, "passwordConfirm"));
       if (res.code === "SU") {
         showToastByCode("SU", "회원가입에 성공하였습니다.");
         setAuth("login");
