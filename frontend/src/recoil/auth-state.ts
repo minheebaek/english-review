@@ -3,7 +3,7 @@ import { atom, useSetRecoilState } from "recoil";
 
 export const tokenState = atom<string | null>({
   key: "tokenState",
-  default: null,
+  default: JSON.parse(localStorage.getItem("loginInfo")!) || null,
 });
 
 export const useAuthentication = () => {
@@ -22,7 +22,7 @@ export const useAuthentication = () => {
 
   const logout = () => {
     setToken(null);
-    localStorage.removeItem("token");
+    localStorage.removeItem("loginInfo");
   };
 
   return { login, logout };

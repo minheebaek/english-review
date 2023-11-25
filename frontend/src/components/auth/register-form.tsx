@@ -39,7 +39,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setAuth }) => {
         setAuth("login");
       }
     } catch (error: any) {
-      showToastByCode(error.response.data.code);
+      showToastByCode(error?.response?.data?.code || "NE");
     } finally {
       setIsLoading(false);
     }

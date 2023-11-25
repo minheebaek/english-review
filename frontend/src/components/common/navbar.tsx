@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
+import { useRecoilValue } from "recoil";
+import { tokenState } from "../../recoil/auth-state";
+
 import clsx from "clsx";
-import { Menu, X } from "lucide-react";
+import { Menu, Plus, X } from "lucide-react";
 
 import "./animation.css";
 
@@ -18,8 +21,11 @@ const Navbar = () => {
     setOpen(!isOpen);
   };
 
+  const loginInfo = useRecoilValue(tokenState);
+  console.log(loginInfo);
+
   return (
-    <nav className="fixed w-full bg-primary py-5 sm:py-7 text-white z-40">
+    <nav className="fixed w-full bg-primary py-5 sm:py-7 text-white z-40 shadow-lg">
       <Layout>
         {/* mobile view */}
         <div className="flex sm:hidden justify-between items-center px-4">
@@ -95,12 +101,24 @@ const Navbar = () => {
               </NavLink>
             ))}
           </ul>
-          <button
-            onClick={() => navigate("/auth")}
-            className="btn btn-sm btn-secondary text-white "
-          >
-            로그인
-          </button>
+          {loginInfo ? (
+            <div className="avatar indicator placeholder cursor-pointer">
+              <span className="indicator-item badge badge-error text-white text-xs">
+                <Plus size={10} />
+                {99}
+              </span>
+              <div className="bg-neutral text-neutral-content rounded-full w-10 hover:border transition-all">
+                <span className="text-xs">MX</span>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={() => navigate("/auth")}
+              className="btn btn-sm btn-secondary text-white "
+            >
+              로그인
+            </button>
+          )}
         </div>
       </Layout>
     </nav>

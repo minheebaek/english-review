@@ -8,7 +8,8 @@ export type ResponseCode =
   | "NB"
   | "SF"
   | "AF"
-  | "NP";
+  | "NP"
+  | "NE";
 
 export interface LoginResponse {
   code: ResponseCode;

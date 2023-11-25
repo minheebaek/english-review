@@ -49,11 +49,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ setAuth }) => {
       } else {
         showToastByCode(res.code);
       }
-    } catch (error) {
-      toast.error("네트워크 에러가 발생하였습니다.", {
-        position: "top-center",
-        autoClose: 3000,
-      });
+    } catch (error: any) {
+      showToastByCode(error?.response?.data?.code || "NE");
     } finally {
       setIsLoading(false);
       reset();
