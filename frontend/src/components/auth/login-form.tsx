@@ -6,7 +6,6 @@ import { useAuthentication } from "../../recoil/auth-state";
 import { AuthType } from "../../pages/auth";
 import { signIn } from "../../apis/auth";
 
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { showToastByCode } from "../../utils/response";
 import { LoginUser } from "../../types/interface";
