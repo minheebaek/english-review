@@ -3,7 +3,7 @@ import { Plus } from "lucide-react";
 const Avatar = () => {
   return (
     <div className="avatar indicator placeholder cursor-pointer">
-      <span className="indicator-item badge badge-error text-white text-xs">
+      <span className="indicator-item badge badge-success text-white text-xs">
         <Plus size={10} />
         {99}
       </span>
