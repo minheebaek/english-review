@@ -2,8 +2,8 @@ import SectionLayout from "../components/home/section-layout";
 
 export default function Home() {
   return (
-    <>
-      <div className="bg-primary">
+    <main className="">
+      <div className="bg-primary pt-20 sm:pt-24 md:pt-0">
         <SectionLayout
           title={`효과적인
                   영어 복습을 위한 
@@ -40,6 +40,6 @@ export default function Home() {
           isSecondary
         />
       </div>
-    </>
+    </main>
   );
 }

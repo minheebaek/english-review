@@ -32,12 +32,33 @@ const Navbar = () => {
           <Link to={"/"} className="uppercase text-lg font-bold">
             review us
           </Link>
-          <button
-            className="btn btn-secondary btn-sm text-white p-1"
-            onClick={() => toggleNavbarOpen()}
-          >
-            <Menu size={24} className="swap-off fill-current" />
-          </button>
+          <div className="flex items-center gap-x-2">
+            {loginInfo ? (
+              <div className="flex items-center gap-x-2 ">
+                <button
+                  onClick={() => navigate("mystudy/write")}
+                  className="btn btn-secondary btn-square text-white btn-sm"
+                >
+                  <Plus size={14} />
+                </button>
+                <AvatarMenu />
+              </div>
+            ) : (
+              <button
+                onClick={() => navigate("/auth")}
+                className="btn btn-sm btn-secondary text-white "
+              >
+                로그인
+              </button>
+            )}
+            <button
+              className="btn btn-secondary btn-sm text-white p-1"
+              onClick={() => toggleNavbarOpen()}
+            >
+              <Menu size={24} className="swap-off fill-current" />
+            </button>
+          </div>
+
           {/* Mobile Nav */}
           <div
             className={clsx(
@@ -102,10 +123,10 @@ const Navbar = () => {
             ))}
           </ul>
           {loginInfo ? (
-            <div className="flex items-center gap-x-2">
+            <div className="flex flex-col  items-center md:flex-row gap-x-2 gap-y-5">
               <button
                 onClick={() => navigate("mystudy/write")}
-                className="btn btn-secondary text-white btn-sm"
+                className="btn btn-secondary text-white btn-xs md:btn-sm"
               >
                 <Plus size={14} />새 복습
               </button>
