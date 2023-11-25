@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuthentication } from "../../recoil/auth-state";
 
-import { AuthType, FormData } from "../../pages/auth";
+import { AuthType } from "../../pages/auth";
 import { signIn } from "../../apis/auth";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { showToastByCode } from "../../utils/response";
+import { LoginUser } from "../../types/interface";
 
 interface LoginFormProps {
   setAuth: (type: AuthType) => void;
@@ -19,14 +20,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ setAuth }) => {
   const navigate = useNavigate();
   const { login } = useAuthentication();
 
-  const [formData, setFormData] = useState<FormData>({
-    username: "",
+  const [formData, setFormData] = useState<LoginUser>({
+    email: "",
     password: "",
   });
 
   const reset = () => {
     setFormData({
-      username: "",
+      email: "",
       password: "",
     });
   };
@@ -36,14 +37,17 @@ const LoginForm: React.FC<LoginFormProps> = ({ setAuth }) => {
 
     try {
       setIsLoading(true);
-      const res = await signIn(formData.username, formData.password);
+      const res = await signIn({
+        email: formData.email,
+        password: formData.password,
+      });
       if (res.code === "SU") {
         // 로그인 성공 시 토큰 저장
         login(res.token, res.expirationTime);
         showToastByCode(res.code, "로그인에 성공하였습니다.");
         navigate("/");
       } else {
-        showToastByCode("VF");
+        showToastByCode(res.code);
       }
     } catch (error) {
       toast.error("네트워크 에러가 발생하였습니다.", {
@@ -68,11 +72,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ setAuth }) => {
           <span className="label-text font-bold">이메일</span>
         </label>
         <input
-          name="username"
+          name="email"
           type="email"
           placeholder="example@naver.com"
           className={"input input-primary input-bordered w-full"}
-          value={formData.username}
+          value={formData.email}
           onChange={handleChange}
           required
           disabled={isLoading}

@@ -1,5 +1,10 @@
-export default interface RegisterUser {
+export interface RegisterUser {
   email: string;
   password: string;
-  nickName: string;
+  nickname: string;
+}
+
+export interface LoginUser {
+  email: string;
+  password: string;
 }

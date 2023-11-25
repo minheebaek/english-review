@@ -5,10 +5,6 @@ import "../styles/auth-style.css";
 import RegisterForm from "../components/auth/register-form";
 
 export type AuthType = "login" | "register";
-export interface FormData {
-  username: string;
-  password: string;
-}
 
 export default function Auth() {
   const [auth, setAuth] = useState<AuthType>("login");

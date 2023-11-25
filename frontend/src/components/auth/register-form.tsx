@@ -1,11 +1,12 @@
 import { useState } from "react";
 
-import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
+
 import { AuthType } from "../../pages/auth";
-import { showToastByCode } from "../../utils/response";
 import { signUp } from "../../apis/auth";
+
 import { removeProperty } from "../../utils/common";
+import { showToastByCode } from "../../utils/response";
 
 interface RegisterFormProps {
   setAuth: (type: AuthType) => void;
@@ -25,6 +26,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setAuth }) => {
     formState: { errors },
     handleSubmit,
     watch,
+    reset,
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
@@ -33,15 +35,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setAuth }) => {
       const res = await signUp(removeProperty(data, "passwordConfirm"));
       if (res.code === "SU") {
         showToastByCode("SU", "회원가입에 성공하였습니다.");
+        reset();
         setAuth("login");
-      } else {
-        showToastByCode("VF");
       }
-    } catch (error) {
-      toast.error("서버 에러", {
-        position: "top-center",
-        autoClose: 3000,
-      });
+    } catch (error: any) {
+      showToastByCode(error.response.data.code);
     } finally {
       setIsLoading(false);
     }

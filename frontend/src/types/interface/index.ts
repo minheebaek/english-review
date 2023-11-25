@@ -1,4 +1,4 @@
 import { RegisterResponse, LoginResponse } from "./response-interface";
-import RegisterUser from "./user-interface";
+import { RegisterUser, LoginUser } from "./user-interface";
 
-export type { RegisterResponse, LoginResponse, RegisterUser };
+export type { RegisterResponse, LoginResponse, RegisterUser, LoginUser };
