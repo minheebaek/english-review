@@ -40,6 +40,13 @@ const Routes = () => {
               path: "/mystudy/:studyId",
               element: <MyStudyDetail />,
               errorElement: <Error />,
+              children: [
+                {
+                  path: "/mystudy/:studyId/form",
+                  element: <div>test</div>,
+                  errorElement: <Error />,
+                },
+              ],
             },
           ],
         },

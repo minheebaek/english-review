@@ -12,7 +12,7 @@ export default function MyStudy() {
 
   return (
     <Inner>
-      <section className="mt-4">
+      <section className="mt-4 sm:mt-32 md:mt-24 lg:mt-8">
         <Title
           title="어서오세요 0 0 0 님!"
           subtitle={`${today.getFullYear()}년 ${today.getMonth()}월 ${today.getDay()}일 까지 공부한 내용을 확인해 보세요`}
