@@ -4,15 +4,16 @@ interface LayoutProps {
 
 const Inner: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div
-      className="pt-[88px] mx-auto
-        sm:w-[90%]  sm:pt-12
+    <main
+      className="pt-[128px] mx-auto px-4
+        sm:w-[90%] sm:pt-40 sm:px-0
+        md:pt-40
         max-w-[120rem]
-        lg:pt-24
+        lg:pt-40
     "
     >
       {children}
-    </div>
+    </main>
   );
 };
 

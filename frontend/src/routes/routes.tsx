@@ -11,6 +11,7 @@ import MyStudy from "../pages/my-study/my-study";
 import MyStudyDetail from "../pages/my-study/my-study-detail";
 import { ProtectedRoute } from "./protected-route";
 import Auth from "../pages/auth";
+import MyStudyWrite from "../pages/my-study/my-study-write";
 
 const Routes = () => {
   const token = useRecoilValue(tokenState);
@@ -37,16 +38,19 @@ const Routes = () => {
               errorElement: <Error />,
             },
             {
+              path: "/mystudy/write",
+              element: <MyStudyWrite />,
+              errorElement: <Error />,
+            },
+            {
               path: "/mystudy/:studyId",
               element: <MyStudyDetail />,
               errorElement: <Error />,
-              children: [
-                {
-                  path: "/mystudy/:studyId/form",
-                  element: <div>test</div>,
-                  errorElement: <Error />,
-                },
-              ],
+            },
+            {
+              path: "/mystudy/:studyId/form",
+              element: <MyStudyDetail />,
+              errorElement: <Error />,
             },
           ],
         },

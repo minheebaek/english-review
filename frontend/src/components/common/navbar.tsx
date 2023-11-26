@@ -123,12 +123,13 @@ const Navbar = () => {
             ))}
           </ul>
           {loginInfo ? (
-            <div className="flex flex-col  items-center md:flex-row gap-x-2 gap-y-5">
+            <div className="flex items-center gap-x-2 gap-y-5">
               <button
                 onClick={() => navigate("mystudy/write")}
-                className="btn btn-secondary text-white btn-xs md:btn-sm"
+                className="btn btn-secondary text-white btn-sm "
               >
-                <Plus size={14} />새 복습
+                <Plus size={14} />
+                <p className="sm:hidden">새 복습</p>
               </button>
               <AvatarMenu />
             </div>
