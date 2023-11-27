@@ -20,6 +20,7 @@ public class UserEntity {
     private String email;
     private String password;
     private String nickname;
+    private String profileImage;
 
     public UserEntity(SignUpRequestDto dto) {
         this.email = dto.getEmail();
