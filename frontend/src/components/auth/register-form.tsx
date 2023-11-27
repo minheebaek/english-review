@@ -7,17 +7,11 @@ import { signUp } from "../../apis/auth";
 
 import { removeProperty } from "../../utils/common";
 import { showToastByCode } from "../../utils/response";
+import { RegistFormData } from "../../types/interface";
 
 interface RegisterFormProps {
   setAuth: (type: AuthType) => void;
 }
-
-type FormData = {
-  nickname: string;
-  email: string;
-  password: string;
-  passwordConfirm: string;
-};
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ setAuth }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,9 +21,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setAuth }) => {
     handleSubmit,
     watch,
     reset,
-  } = useForm<FormData>();
+  } = useForm<RegistFormData>();
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: RegistFormData) => {
     try {
       setIsLoading(true);
       const res = await signUp(removeProperty(data, "passwordConfirm"));

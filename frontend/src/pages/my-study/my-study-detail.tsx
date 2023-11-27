@@ -1,6 +1,3 @@
-import React from "react";
-import { Outlet, useMatch, useParams } from "react-router-dom";
-
 import { Switch } from "@headlessui/react";
 import { PenSquare, Trash2 } from "lucide-react";
 

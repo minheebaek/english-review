@@ -1,4 +1,4 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface CardProps {
   id: string;
@@ -8,10 +8,11 @@ interface CardProps {
 }
 
 const Card = () => {
-  const handleNav = () => {};
+  const nav = useNavigate();
   const handleSwitch = () => {};
   return (
     <div
+      onClick={() => nav(`/mystudy/${123}`)}
       className="relative card w-full bg-base-100 shadow-xl cursor-pointer max-w-xs
     xl:max-w-sm
     hover:opacity-50 transition-opacity

@@ -7,7 +7,7 @@ function App() {
   const pathInfo = useMatch("/");
 
   return (
-    <div className="relative">
+    <div className="relative h-screen flex flex-col">
       <Navbar />
       {pathInfo?.pathname === "/" ? <Home /> : <Outlet />}
       <Footer />
