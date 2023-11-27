@@ -3,7 +3,7 @@ import SectionLayout from "../components/home/section-layout";
 export default function Home() {
   return (
     <main className="">
-      <div className="bg-primary pt-20 sm:pt-24 md:pt-0">
+      <div className="bg-primary pt-20 sm:pt-24 lg:pt-0">
         <SectionLayout
           title={`효과적인
                   영어 복습을 위한 

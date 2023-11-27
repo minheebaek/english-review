@@ -12,6 +12,8 @@ import MyStudyDetail from "../pages/my-study/my-study-detail";
 import { ProtectedRoute } from "./protected-route";
 import Auth from "../pages/auth";
 import MyStudyWrite from "../pages/my-study/my-study-write";
+import UserProfile from "../pages/profile";
+import MyPage from "../pages/my-page";
 
 const Routes = () => {
   const token = useRecoilValue(tokenState);
@@ -53,6 +55,16 @@ const Routes = () => {
               errorElement: <Error />,
             },
           ],
+        },
+        {
+          path: "profile",
+          element: <UserProfile />,
+          errorElement: <Error />,
+        },
+        {
+          path: "mypage",
+          element: <MyPage />,
+          errorElement: <Error />,
         },
       ],
     },
