@@ -1,7 +1,7 @@
 package com.example.backend.entity;
 
-import com.example.backend.dto.request.auth.PostBoardRequestDto;
-import com.example.backend.dto.response.board.PostBoardResponseDto;
+import com.example.backend.dto.request.board.PatchBoardRequestDto;
+import com.example.backend.dto.request.board.PostBoardRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +36,12 @@ public class BoardEntity {
         this.content = dto.getContent();
         this.writeDatetime = writeDatetime;
         this.writerEmail = email;
-        this.aram = aram;
+        this.aram = dto.isAram();
+    }
+
+    public void updateBoard(PatchBoardRequestDto dto){
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.aram=dto.isAlarm();
     }
 }

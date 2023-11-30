@@ -1,8 +1,10 @@
 package com.example.backend.service.implement;
 
-import com.example.backend.dto.request.auth.PostBoardRequestDto;
+import com.example.backend.dto.request.board.PatchBoardRequestDto;
+import com.example.backend.dto.request.board.PostBoardRequestDto;
 import com.example.backend.dto.response.ResponseDto;
 import com.example.backend.dto.response.board.GetBoardResponseDto;
+import com.example.backend.dto.response.board.PatchBoardResponseDto;
 import com.example.backend.dto.response.board.PostBoardResponseDto;
 import com.example.backend.entity.BoardEntity;
 import com.example.backend.repository.BoardRepository;
@@ -17,6 +19,26 @@ import org.springframework.stereotype.Service;
 public class BoardServiceImplement implements BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+
+    @Override
+    public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email) {
+        BoardEntity boardEntity = null;
+        try{
+            boolean existedEmail = userRepository.existsByEmail(email);
+            if(!existedEmail) return PatchBoardResponseDto.notExistUser();
+
+            boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if(boardEntity == null) return PatchBoardResponseDto.notExistBoard();
+
+            boardEntity.updateBoard(dto);
+            boardRepository.save(boardEntity);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return PatchBoardResponseDto.success();
+    }
 
     @Override
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
