@@ -2,6 +2,7 @@ package com.example.backend.service.implement;
 
 import com.example.backend.dto.request.auth.PostBoardRequestDto;
 import com.example.backend.dto.response.ResponseDto;
+import com.example.backend.dto.response.board.GetBoardResponseDto;
 import com.example.backend.dto.response.board.PostBoardResponseDto;
 import com.example.backend.entity.BoardEntity;
 import com.example.backend.repository.BoardRepository;
@@ -16,6 +17,20 @@ import org.springframework.stereotype.Service;
 public class BoardServiceImplement implements BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+
+    @Override
+    public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
+        BoardEntity boardEntity = null;
+        try{
+            boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if(boardEntity == null) return GetBoardResponseDto.notExistBoard();
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetBoardResponseDto.success(boardEntity);
+    }
 
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
