@@ -18,6 +18,23 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService boardService;
+    /**
+     * 게시글 삭제
+     * localhost:8080/mystudy/{boardNumber}
+     *
+     * @parm boardNumber
+     * @parm email
+     * @return response
+     */
+    @DeleteMapping("/{boardNumber}")
+    public ResponseEntity<?> deleteBoard(
+            @PathVariable ("boardNumber") Integer boardNumber,
+            @AuthenticationPrincipal String email
+    ){
+        ResponseEntity<?> response = boardService.deleteBoard(boardNumber, email);
+        return response;
+    }
+
 
     /**
      * 게시글 수정

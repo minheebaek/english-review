@@ -8,6 +8,7 @@ import com.example.backend.dto.response.board.PostBoardResponseDto;
 import org.springframework.http.ResponseEntity;
 
 public interface BoardService {
+    ResponseEntity<?> deleteBoard(Integer boardNumber, String email);
     ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email);
     ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);
     ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email);
