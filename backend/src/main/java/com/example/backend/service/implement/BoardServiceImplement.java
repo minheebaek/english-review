@@ -64,6 +64,8 @@ public class BoardServiceImplement implements BoardService {
             boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null) return PatchBoardResponseDto.notExistBoard();
 
+            if(!boardEntity.getWriterEmail().equals(email)) return PatchBoardResponseDto.notpermission();
+
             boardEntity.updateBoard(dto);
             boardRepository.save(boardEntity);
 
