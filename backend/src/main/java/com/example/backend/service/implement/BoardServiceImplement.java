@@ -77,11 +77,16 @@ public class BoardServiceImplement implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
+    public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber, String email) {
         BoardEntity boardEntity = null;
         try {
+            boolean existedEmail = userRepository.existsByEmail(email);
+            if(!existedEmail) return GetBoardResponseDto.notExistUser();
+
             boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null) return GetBoardResponseDto.notExistBoard();
+
+            if (!boardEntity.getWriterEmail().equals(email)) return GetBoardResponseDto.notPermission();
 
         } catch (Exception exception) {
             exception.printStackTrace();

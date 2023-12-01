@@ -64,9 +64,10 @@ public class BoardController {
      */
     @GetMapping("/{boardNumber}")
     public ResponseEntity<? super GetBoardResponseDto> getBoard(
-            @PathVariable("boardNumber") Integer boardNumber
+            @PathVariable("boardNumber") Integer boardNumber,
+            @AuthenticationPrincipal String email
     ){
-        ResponseEntity<? super GetBoardResponseDto> response = boardService.getBoard(boardNumber);
+        ResponseEntity<? super GetBoardResponseDto> response = boardService.getBoard(boardNumber, email);
         return response;
     }
 
