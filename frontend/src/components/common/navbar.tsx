@@ -102,7 +102,7 @@ const Navbar = () => {
         {/* tablet & desktop view */}
         <div className="hidden sm:flex justify-between items-center gap-x-10">
           <Link
-            to={"/home"}
+            to={"/"}
             className="flex-initial lg:flex-1 font-bold text-xl uppercase"
           >
             Review us

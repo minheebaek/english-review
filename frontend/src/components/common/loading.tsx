@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React from "react";
 
 interface LoadingProps {
@@ -8,7 +9,11 @@ interface LoadingProps {
 const Loading: React.FC<LoadingProps> = ({ size, type }) => {
   return (
     <div
-      className={`loading text-primary loading-${type} loading-${size}`}
+      className={clsx(
+        `loading text-primary`,
+        `loading-${type}`,
+        ` loading-${size}`
+      )}
     ></div>
   );
 };

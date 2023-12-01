@@ -11,14 +11,16 @@ export type ResponseCode =
   | "NP"
   | "NE";
 
-export interface LoginResponse {
+interface CommonResponse {
   code: ResponseCode;
   message: string;
+}
+
+export interface LoginResponse extends CommonResponse {
   token: string;
   expirationTime: number;
 }
 
-export interface RegisterResponse {
-  code: ResponseCode;
-  message: string;
-}
+export interface RegisterResponse extends CommonResponse {}
+
+export interface MyStudyPostResponse extends CommonResponse {}

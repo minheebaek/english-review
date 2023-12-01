@@ -31,6 +31,9 @@ export default function MyPage() {
         </div>
       </section>
       <div className="divider divider-primary"></div>
+      <h2 className="text-2xl font-semibold mt-3 mb-3 text-center sm:text-start sm:mt-0">
+        히스토리
+      </h2>
       <MyStudyHistory />
     </Inner>
   );
