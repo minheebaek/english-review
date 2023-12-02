@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import clsx from "clsx";
@@ -19,14 +19,18 @@ import { useMyStudyPostMutation } from "../../hooks/useStudy";
 import useEditor from "../../hooks/useEditor";
 
 interface StudyFormProps {
-  initialData?: MyStudyFormData;
+  myStudyData: MyStudyFormData;
+  setMyStudyData: Dispatch<SetStateAction<MyStudyFormData>>;
 }
 
 // quill 초기화
 Quill.register("modules/imageActions", ImageActions);
 Quill.register("modules/imageFormats", ImageFormats);
 
-const StudyForm: React.FC<StudyFormProps> = ({ initialData }) => {
+const StudyForm: React.FC<StudyFormProps> = ({
+  myStudyData,
+  setMyStudyData,
+}) => {
   const {
     register,
     formState: { errors },
@@ -34,12 +38,11 @@ const StudyForm: React.FC<StudyFormProps> = ({ initialData }) => {
     watch,
     reset,
     setValue,
-  } = useForm<MyStudyFormData>();
+  } = useForm<MyStudyFormData>({
+    defaultValues: myStudyData,
+  });
 
-  const btnName = initialData ? "수정하기" : "저장하기";
-
-  const [tagNames, setTagNames] = useState<string[]>([]);
-  const [isAlram, setIsAlram] = useState<boolean>(false);
+  const btnName = myStudyData.title ? "수정하기" : "저장하기";
   const [contentsValue, setContentsValue] = useState("");
 
   const editorRef = useRef(null);
@@ -53,8 +56,17 @@ const StudyForm: React.FC<StudyFormProps> = ({ initialData }) => {
     // console.log(test);
   };
 
+  const title = watch("title");
+  const tagList = watch("tagList");
+  const content = watch("content");
+  const isAlram = watch("isAlram");
+
+  useEffect(() => {
+    setMyStudyData({ content, title, tagList, isAlram });
+  }, [title, tagList, isAlram, setMyStudyData, content]);
+
   return (
-    <section className="my-6">
+    <div className="my-6">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <input
@@ -84,15 +96,12 @@ const StudyForm: React.FC<StudyFormProps> = ({ initialData }) => {
         "
         >
           <TagsInput
-            value={tagNames}
+            value={tagList}
             placeHolder="태그를 입력하세요"
-            {...(register("tagList"),
-            {
-              onChange(tags) {
-                setTagNames(tags);
-                setValue("tagList", tags);
-              },
-            })}
+            {...(register("tagList"), {})}
+            onChange={(tags) => {
+              setValue("tagList", tags);
+            }}
           />
         </div>
         <div className="w-full flex justify-end my-3">
@@ -103,20 +112,17 @@ const StudyForm: React.FC<StudyFormProps> = ({ initialData }) => {
                 isAlram ? " text-primary " : "text-neutral"
               )}
             >
-              {isAlram ? "망각곡선 알림 On" : "망각곡선 알림 Off"}
+              망각곡선 알림
             </Switch.Label>
             <Switch
               checked={isAlram}
               className={`${
                 isAlram ? "bg-primary" : "bg-neutral"
               } relative inline-flex h-6 w-11 items-center rounded-full`}
-              {...(register("isAlram"),
-              {
-                onChange(checked) {
-                  setIsAlram(!isAlram);
-                  setValue("isAlram", !isAlram);
-                },
-              })}
+              {...(register("isAlram"), {})}
+              onChange={() => {
+                setValue("isAlram", !isAlram);
+              }}
             >
               <span className="sr-only">Enable notifications</span>
               <span
@@ -131,7 +137,7 @@ const StudyForm: React.FC<StudyFormProps> = ({ initialData }) => {
           <ReactQuill
             theme="snow"
             ref={editorRef}
-            value={contentsValue}
+            value={content}
             modules={modules}
             formats={formats}
             placeholder="복습할 내용을 적어보세요"
@@ -140,32 +146,39 @@ const StudyForm: React.FC<StudyFormProps> = ({ initialData }) => {
               marginBottom: "1rem",
             }}
             {...(register("content", {
-              required: "내용을 입력해 주세요",
+              required: "글 내용을 입력해 주세요",
               minLength: {
                 value: 10,
                 message: "최소 10글자 이상 입력해야 합니다.",
               },
             }),
-            {
-              onChange(content) {
-                setContentsValue(content);
-                setValue("content", contentsValue);
-              },
-            })}
+            {})}
+            onChange={(value) => {
+              setValue("content", value === "<p><br></p>" ? "" : value);
+            }}
           />
           <label className="label">
             <span className="label-text-alt text-error">
-              {errors.title?.message}
+              {errors.content?.message}
             </span>
           </label>
         </div>
-        <div className="w-full flex justify-end">
-          <button type="submit" className="w-full btn btn-primary  sm:btn-wide">
+        <div className="w-full flex justify-end gap-x-2">
+          <button
+            type="button"
+            className="w-full btn btn-outline btn-primary  sm:btn-wide"
+          >
+            미리보기
+          </button>
+          <button
+            type="submit"
+            className="w-full btn btn-primary  sm:btn-wide text-white"
+          >
             {btnName}
           </button>
         </div>
       </form>
-    </section>
+    </div>
   );
 };
 

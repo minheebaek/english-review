@@ -4,6 +4,7 @@
  * Copyright (c) 2014, Jason Chen
  * Copyright (c) 2013, salesforce.com
  */
+
 .quill {
   display: flex;
   flex-direction: column;
@@ -11,13 +12,14 @@
 }
 
 .ql-container {
+  display: flex;
+  flex-direction: column;
   flex: 1 1 0;
   box-sizing: border-box;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 13px;
   height: 100%;
   margin: 0px;
-  position: relative;
 }
 .ql-container.ql-disabled .ql-tooltip {
   visibility: hidden;

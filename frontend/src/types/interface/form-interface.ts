@@ -8,7 +8,7 @@ export interface RegistFormData {
 export interface MyStudyFormData {
   title: string;
   content: string;
-  boardFileList: string[];
+  boardFileList?: string[];
   tagList: string[];
   isAlram: boolean;
 }

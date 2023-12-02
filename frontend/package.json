@@ -20,6 +20,7 @@
     "aws-sdk": "^2.1509.0",
     "axios": "^1.6.1",
     "clsx": "^2.0.0",
+    "dompurify": "^3.0.6",
     "lucide-react": "^0.292.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
@@ -60,6 +61,7 @@
     ]
   },
   "devDependencies": {
+    "@types/dompurify": "^3.0.5",
     "autoprefixer": "^10.4.16",
     "daisyui": "^4.4.4",
     "postcss": "^8.4.31",
