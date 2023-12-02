@@ -54,7 +54,7 @@ li {
   font-weight: bold; /* 링크 텍스트 굵게 표시 */
 }
 
-a:hover {
+.preview-container a:hover {
   text-decoration: underline; /* 링크에 마우스 호버 시 밑줄 표시 */
 }
 

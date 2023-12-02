@@ -7,7 +7,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <section
-      className="w-full bg-primary mx-auto
+      className="w-full bg-transparent mx-auto
         sm:w-[90%]
         max-w-[120rem]
     "

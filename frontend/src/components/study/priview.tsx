@@ -14,7 +14,7 @@ interface PriviewProps {
 const Priview: React.FC<PriviewProps> = ({ priviewData }) => {
   return (
     <div className="p-5">
-      <h1 className="font-bold text-2xl text-center">{priviewData.title}</h1>
+      <h1 className="font-bold text-4xl text-center">{priviewData.title}</h1>
       <div className="flex mt-10 gap-x-3 ">
         {priviewData?.tagList?.map((tag) => (
           <div key={tag} className="badge badge-primary">

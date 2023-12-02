@@ -34,7 +34,7 @@ const SectionLayout: React.FC<SectionLayoutProps> = ({
     <Layout>
       <div
         className={clsx(
-          "hero min-h-screen lg:min-h-[760px] ",
+          "hero min-h-screen lg:min-h-[760px]",
           isLast ? "border-primary border-t-2" : "",
           textColor,
           bgColor
