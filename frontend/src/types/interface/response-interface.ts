@@ -24,3 +24,17 @@ export interface LoginResponse extends CommonResponse {
 export interface RegisterResponse extends CommonResponse {}
 
 export interface MyStudyPostResponse extends CommonResponse {}
+
+export interface MyStudy {
+  boardNumber: number;
+  title: string;
+  content: string;
+  boardTitleFile: any;
+  writeDatetime: string;
+  tagList: string[];
+  alarm: boolean;
+}
+
+export interface MyStudyGetResponse extends CommonResponse {
+  searchList: MyStudy[];
+}

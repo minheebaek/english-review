@@ -8,7 +8,7 @@ export default function Home() {
     >
       <div
         className="relative bg-gradient-to-r from-primary to-secondary pt-20 sm:pt-24 lg:pt-0
-      after:content-[''] after:absolute after:bottom-0 after:w-full after:h-[150px] after:bg-gradient-to-b after:from-transparent after:to-white
+      after:content-[''] after:absolute after:bottom-0 after:w-full after:h-[100px] after:bg-gradient-to-b after:from-transparent after:to-white
       "
       >
         <SectionLayout

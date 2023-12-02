@@ -1,4 +1,4 @@
-import PreviewModal from "../components/modals/priview-modal";
+import PreviewModal from "../components/modals/preview-modal";
 
 const ModalProvider = () => {
   return (

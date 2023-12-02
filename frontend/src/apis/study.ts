@@ -12,7 +12,12 @@ export const getMyStudies = async (option?: string) => {
 };
 
 export const postMyStudy = async (data: MyStudyFormData) => {
-  return await API.post("/mystudy/create", JSON.stringify(data)).then((res) => {
+  return await API.post("/mystudy/create", {
+    headers: {
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+    data: JSON.stringify(data),
+  }).then((res) => {
     const resData: MyStudyPostResponse = res.data;
     return resData;
   });

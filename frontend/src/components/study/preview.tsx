@@ -7,11 +7,11 @@ import { Switch } from "@headlessui/react";
 import { MyStudyFormData } from "../../types/interface";
 import "./custom-quill-result.css";
 
-interface PriviewProps {
+interface PreviewProps {
   priviewData: MyStudyFormData;
 }
 
-const Priview: React.FC<PriviewProps> = ({ priviewData }) => {
+const Preview: React.FC<PreviewProps> = ({ priviewData }) => {
   return (
     <div className="p-5">
       <h1 className="font-bold text-4xl text-center">{priviewData.title}</h1>
@@ -60,4 +60,4 @@ const Priview: React.FC<PriviewProps> = ({ priviewData }) => {
   );
 };
 
-export default Priview;
+export default Preview;

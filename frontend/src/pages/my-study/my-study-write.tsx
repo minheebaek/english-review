@@ -4,8 +4,9 @@ import { useSearchParams } from "react-router-dom";
 import Inner from "../../components/common/inner";
 import Title from "../../components/common/title";
 import StudyForm from "../../components/study/study-form";
+import Preview from "../../components/study/preview";
+
 import { MyStudyFormData } from "../../types/interface";
-import Priview from "../../components/study/priview";
 
 export default function MyStudyWrite() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -38,7 +39,7 @@ export default function MyStudyWrite() {
         <div className="hidden lg:divider lg:divider-horizontal"></div>
         <section className="hidden lg:block flex-1 border-2 border-primary border-dashed rounded-lg ">
           {/* 미리보기 */}
-          <Priview priviewData={myStudyData} />
+          <Preview priviewData={myStudyData} />
         </section>
       </div>
     </Inner>

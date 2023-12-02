@@ -17,7 +17,7 @@ export const useMyStudyQuery = (userId?: number) => {
   });
 };
 
-export const useMyStudyWriteQuery = (userId?: number, contents?: string) => {
+export const useMyStudyPatchQuery = (userId?: number, contents?: string) => {
   return useQuery({
     queryKey: ["MyStudyWriteQuery"],
     queryFn: () => getMyStudies(),

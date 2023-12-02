@@ -180,14 +180,16 @@ const StudyForm: React.FC<StudyFormProps> = ({
           <button
             type="button"
             className="w-full btn btn-outline btn-primary 
-            sm:btn-wide lg:hidden"
+            lg:btn-wide lg:hidden"
             onClick={() => onOpen(myStudyData)}
           >
             미리보기
           </button>
           <button
             type="submit"
-            className="w-full btn btn-primary  sm:btn-wide text-white"
+            className="w-full btn btn-primary text-white
+            lg:btn-wide lg:hidden
+            "
           >
             {btnName}
           </button>

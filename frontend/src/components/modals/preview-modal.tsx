@@ -10,7 +10,7 @@ import {
 
 import "../study/custom-quill-result.css";
 
-import Priview from "../../components/study/priview";
+import Preview from "../study/preview";
 
 const PreviewModal = () => {
   const previewData = useRecoilValue(previewModalState);
@@ -24,12 +24,12 @@ const PreviewModal = () => {
       desc=""
     >
       <div className="max-h-[350px] overflow-y-scroll">
-        <Priview priviewData={previewData.previewData!} />
+        <Preview priviewData={previewData.previewData!} />
       </div>
       <div className="flex justify-end mt-4">
         <button
           type="button"
-          className="btn btn-sm btn-secondary text-white"
+          className="btn btn-sm btn-primary text-white"
           onClick={onClose}
         >
           확인

@@ -6,7 +6,12 @@ import { Facebook, Github, Instagram } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="text-white bg-primary px-5 py-5 sm:py-12  sm:px-0">
+    <footer
+      className="text-white bg-primary px-5 py-5 
+    sm:py-12 sm:px-0
+    
+    "
+    >
       <Layout>
         <div className="flex justify-between items-center">
           <Link

@@ -3,29 +3,31 @@
   flex-direction: column;
 }
 
-h1 {
+.preview-container h1 {
   font-size: 2rem; /* 원하는 크기로 설정 */
 }
-h2 {
+
+.preview-container h2 {
   font-size: 1.5rem; /* 원하는 크기로 설정 */
 }
-h3 {
+
+.preview-container h3 {
   font-size: 1.25rem; /* 원하는 크기로 설정 */
 }
 
-h4 {
+.preview-container h4 {
   font-size: 1.1rem; /* 원하는 크기로 설정 */
 }
 
-h5 {
+.preview-container h5 {
   font-size: 1rem; /* 원하는 크기로 설정 */
 }
 
-h6 {
+.preview-container h6 {
   font-size: 0.9rem; /* 원하는 크기로 설정 */
 }
 
-blockquote {
+.preview-container blockquote {
   margin: 0 0 20px; /* 블록 인용문 간격 조절 */
   padding: 10px 20px; /* 블록 인용문 안 여백 조절 */
   border-left: 4px solid #5964e0; /* 왼쪽에 선 추가 */
@@ -34,17 +36,17 @@ blockquote {
   background-color: #f0f0f0;
 }
 
-ol {
+.preview-container ol {
   list-style-type: decimal; /* 숫자 목록 스타일 */
   margin-left: 50px; /* 목록 왼쪽 여백 조절 */
 }
 
-ul {
+.preview-container ul {
   list-style-type: disc; /* 원형 목록 스타일 */
   margin-left: 50px; /* 목록 왼쪽 여백 조절 */
 }
 
-li {
+.preview-container li {
   margin-bottom: 5px; /* 각 항목의 아래 여백 조절 */
 }
 
@@ -60,4 +62,8 @@ li {
 
 .ql-align-center {
   margin: 0 auto;
+}
+
+.preview-container img {
+  border-radius: 10px;
 }
