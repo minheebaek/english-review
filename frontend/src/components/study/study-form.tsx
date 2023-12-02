@@ -15,8 +15,13 @@ import "./custom-quill.css";
 import "./tag-input.css";
 
 import { MyStudyFormData } from "../../types/interface";
-import { useMyStudyPostMutation } from "../../hooks/useStudy";
-import useEditor from "../../hooks/useEditor";
+
+import { useMyStudyPostMutation } from "../../hooks/use-study";
+import useEditor from "../../hooks/use-editor";
+import {
+  previewModalState,
+  usePreviewModal,
+} from "../../hooks/use-preview-modal";
 
 interface StudyFormProps {
   myStudyData: MyStudyFormData;
@@ -56,6 +61,7 @@ const StudyForm: React.FC<StudyFormProps> = ({
     // console.log(test);
   };
 
+  // 미리보기 데이터 input
   const title = watch("title");
   const tagList = watch("tagList");
   const content = watch("content");
@@ -64,6 +70,9 @@ const StudyForm: React.FC<StudyFormProps> = ({
   useEffect(() => {
     setMyStudyData({ content, title, tagList, isAlram });
   }, [title, tagList, isAlram, setMyStudyData, content]);
+
+  // 미리보기 오픈
+  const { onOpen } = usePreviewModal();
 
   return (
     <div className="my-6">
@@ -163,10 +172,16 @@ const StudyForm: React.FC<StudyFormProps> = ({
             </span>
           </label>
         </div>
-        <div className="w-full flex justify-end gap-x-2">
+        <div
+          className="w-full flex flex-col gap-y-2 gap-x-2
+        lg:flex-row lg:justify-end
+        "
+        >
           <button
             type="button"
-            className="w-full btn btn-outline btn-primary  sm:btn-wide"
+            className="w-full btn btn-outline btn-primary 
+            sm:btn-wide lg:hidden"
+            onClick={() => onOpen(myStudyData)}
           >
             미리보기
           </button>

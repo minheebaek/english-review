@@ -9,6 +9,7 @@ import ToastProvider from "./providers/toast-provider";
 import { RecoilRoot } from "recoil";
 
 import Routes from "./routes/routes";
+import ModalProvider from "./providers/modal-provider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -22,6 +23,7 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <ToastProvider />
+        <ModalProvider />
         <Routes />
       </RecoilRoot>
     </QueryClientProvider>

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import Card from "./card";
 import List from "./list";
-import { useMyStudiesQuery } from "../../hooks/useStudy";
+import { useMyStudiesQuery } from "../../hooks/use-study";
 import Loading from "../common/loading";
 
 interface CardListProps {

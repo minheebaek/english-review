@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import Inner from "../../components/common/inner";
 import Title from "../../components/common/title";
@@ -35,7 +35,7 @@ export default function MyStudyWrite() {
             setMyStudyData={setMyStudyData}
           />
         </section>
-        <div className="divider divider-horizontal hidden lg:block"></div>
+        <div className="hidden lg:divider lg:divider-horizontal"></div>
         <section className="hidden lg:block flex-1 border-2 border-primary border-dashed rounded-lg ">
           {/* 미리보기 */}
           <Priview priviewData={myStudyData} />
