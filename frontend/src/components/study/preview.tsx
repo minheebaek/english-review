@@ -16,8 +16,8 @@ const Preview: React.FC<PreviewProps> = ({ priviewData }) => {
     <div className="p-5">
       <h1 className="font-bold text-4xl text-center">{priviewData.title}</h1>
       <div className="flex mt-10 gap-x-3 ">
-        {priviewData?.tagList?.map((tag) => (
-          <div key={tag} className="badge badge-primary">
+        {priviewData?.tagList?.map((tag, i) => (
+          <div key={i} className="badge badge-primary">
             {tag}
           </div>
         ))}
@@ -27,22 +27,22 @@ const Preview: React.FC<PreviewProps> = ({ priviewData }) => {
           <Switch.Label
             className={clsx(
               "mr-1 font-bold sm:text-lg transition-all",
-              priviewData.isAlram ? " text-primary " : "text-neutral"
+              priviewData.alarm ? " text-primary " : "text-neutral"
             )}
           >
             망각곡선 알림
           </Switch.Label>
           <Switch
             disabled
-            checked={priviewData.isAlram}
+            checked={priviewData.alarm}
             className={`${
-              priviewData.isAlram ? "bg-primary" : "bg-neutral"
+              priviewData.alarm ? "bg-primary" : "bg-neutral"
             } relative inline-flex h-6 w-11 items-center rounded-full`}
           >
             <span className="sr-only">Enable notifications</span>
             <span
               className={`${
-                priviewData.isAlram ? "translate-x-6" : "translate-x-1"
+                priviewData.alarm ? "translate-x-6" : "translate-x-1"
               } inline-block h-4 w-4 transform rounded-full bg-white transition`}
             />
           </Switch>

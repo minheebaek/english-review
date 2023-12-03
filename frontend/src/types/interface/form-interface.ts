@@ -10,5 +10,5 @@ export interface MyStudyFormData {
   content: string;
   boardFileList?: string[];
   tagList: string[];
-  isAlram: boolean;
+  alarm: boolean;
 }

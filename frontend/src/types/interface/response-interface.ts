@@ -29,7 +29,7 @@ export interface MyStudy {
   boardNumber: number;
   title: string;
   content: string;
-  boardTitleFile: any;
+  boardFileList: any;
   writeDatetime: string;
   tagList: string[];
   alarm: boolean;
@@ -37,4 +37,8 @@ export interface MyStudy {
 
 export interface MyStudyGetResponse extends CommonResponse {
   searchList: MyStudy[];
+}
+
+export interface MyStudyDetailGetResponse extends CommonResponse, MyStudy {
+  writeremail: string;
 }

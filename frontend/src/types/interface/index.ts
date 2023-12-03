@@ -3,6 +3,7 @@ import {
   LoginResponse,
   MyStudyPostResponse,
   MyStudyGetResponse,
+  MyStudyDetailGetResponse,
 } from "./response-interface";
 import { RegisterUser, LoginUser } from "./user-interface";
 import { RegistFormData, MyStudyFormData } from "./form-interface";
@@ -16,4 +17,5 @@ export type {
   MyStudyFormData,
   MyStudyPostResponse,
   MyStudyGetResponse,
+  MyStudyDetailGetResponse,
 };

@@ -16,16 +16,21 @@ import "./tag-input.css";
 
 import { MyStudyFormData } from "../../types/interface";
 
-import { useMyStudyPostMutation } from "../../hooks/use-study";
+import {
+  useMyStudyPatchMutation,
+  useMyStudyPostMutation,
+} from "../../hooks/use-study";
 import useEditor from "../../hooks/use-editor";
 import {
   previewModalState,
   usePreviewModal,
 } from "../../hooks/use-preview-modal";
+import { title } from "process";
 
 interface StudyFormProps {
   myStudyData: MyStudyFormData;
   setMyStudyData: Dispatch<SetStateAction<MyStudyFormData>>;
+  studyId?: number | null;
 }
 
 // quill 초기화
@@ -35,41 +40,41 @@ Quill.register("modules/imageFormats", ImageFormats);
 const StudyForm: React.FC<StudyFormProps> = ({
   myStudyData,
   setMyStudyData,
+  studyId,
 }) => {
   const {
     register,
     formState: { errors },
     handleSubmit,
     watch,
-    reset,
     setValue,
   } = useForm<MyStudyFormData>({
-    defaultValues: myStudyData,
+    defaultValues: {
+      title: "",
+      content: "",
+      alarm: false,
+      tagList: [],
+      boardFileList: [],
+    },
+    values: myStudyData,
   });
 
-  const btnName = myStudyData.title ? "수정하기" : "저장하기";
-  const [contentsValue, setContentsValue] = useState("");
-
+  const btnName = studyId ? "수정하기" : "저장하기";
   const editorRef = useRef(null);
   const { modules, formats } = useEditor(editorRef);
 
-  const mutation = useMyStudyPostMutation();
+  const postMutation = useMyStudyPostMutation();
+  const patchMutation = useMyStudyPatchMutation();
+
   const onSubmit = async (data: MyStudyFormData) => {
     console.log(data);
 
-    // const test = mutation.mutate(data);
-    // console.log(test);
+    if (studyId) {
+      patchMutation.mutate({ data, boardNumber: studyId });
+    } else {
+      postMutation.mutate(data);
+    }
   };
-
-  // 미리보기 데이터 input
-  const title = watch("title");
-  const tagList = watch("tagList");
-  const content = watch("content");
-  const isAlram = watch("isAlram");
-
-  useEffect(() => {
-    setMyStudyData({ content, title, tagList, isAlram });
-  }, [title, tagList, isAlram, setMyStudyData, content]);
 
   // 미리보기 오픈
   const { onOpen } = usePreviewModal();
@@ -86,10 +91,13 @@ const StudyForm: React.FC<StudyFormProps> = ({
           "
             placeholder="제목을 입력해 주세요"
             {...register("title", {
-              required: "닉네임을 입력해 주세요",
+              required: "제목을 입력해 주세요",
               minLength: {
                 value: 3,
                 message: "최소 3글자 이상 입력해야 합니다.",
+              },
+              onChange(event) {
+                setMyStudyData({ ...myStudyData, title: watch("title") });
               },
             })}
           />
@@ -105,11 +113,12 @@ const StudyForm: React.FC<StudyFormProps> = ({
         "
         >
           <TagsInput
-            value={tagList}
+            value={myStudyData.tagList}
             placeHolder="태그를 입력하세요"
             {...(register("tagList"), {})}
             onChange={(tags) => {
               setValue("tagList", tags);
+              setMyStudyData({ ...myStudyData, tagList: tags });
             }}
           />
         </div>
@@ -118,25 +127,27 @@ const StudyForm: React.FC<StudyFormProps> = ({
             <Switch.Label
               className={clsx(
                 "mr-1 font-bold sm:text-lg transition-all",
-                isAlram ? " text-primary " : "text-neutral"
+                myStudyData.alarm ? " text-primary " : "text-neutral"
               )}
             >
               망각곡선 알림
             </Switch.Label>
             <Switch
-              checked={isAlram}
+              checked={myStudyData.alarm}
               className={`${
-                isAlram ? "bg-primary" : "bg-neutral"
+                myStudyData.alarm ? "bg-primary" : "bg-neutral"
               } relative inline-flex h-6 w-11 items-center rounded-full`}
-              {...(register("isAlram"), {})}
+              {...(register("alarm"), {})}
               onChange={() => {
-                setValue("isAlram", !isAlram);
+                const temp = myStudyData.alarm;
+                setMyStudyData({ ...myStudyData, alarm: !temp });
+                setValue("alarm", !temp);
               }}
             >
               <span className="sr-only">Enable notifications</span>
               <span
                 className={`${
-                  isAlram ? "translate-x-6" : "translate-x-1"
+                  myStudyData.alarm ? "translate-x-6" : "translate-x-1"
                 } inline-block h-4 w-4 transform rounded-full bg-white transition`}
               />
             </Switch>
@@ -146,7 +157,7 @@ const StudyForm: React.FC<StudyFormProps> = ({
           <ReactQuill
             theme="snow"
             ref={editorRef}
-            value={content}
+            value={myStudyData.content}
             modules={modules}
             formats={formats}
             placeholder="복습할 내용을 적어보세요"
@@ -164,6 +175,10 @@ const StudyForm: React.FC<StudyFormProps> = ({
             {})}
             onChange={(value) => {
               setValue("content", value === "<p><br></p>" ? "" : value);
+              setMyStudyData({
+                ...myStudyData,
+                content: value === "<p><br></p>" ? "" : value,
+              });
             }}
           />
           <label className="label">
@@ -188,7 +203,7 @@ const StudyForm: React.FC<StudyFormProps> = ({
           <button
             type="submit"
             className="w-full btn btn-primary text-white
-            lg:btn-wide lg:hidden
+            lg:btn-wide
             "
           >
             {btnName}

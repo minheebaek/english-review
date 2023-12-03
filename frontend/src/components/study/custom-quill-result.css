@@ -5,26 +5,38 @@
 
 .preview-container h1 {
   font-size: 2rem; /* 원하는 크기로 설정 */
+  line-height: 1.8rem;
+  margin: 1rem 0;
 }
 
 .preview-container h2 {
   font-size: 1.5rem; /* 원하는 크기로 설정 */
+  line-height: 1.3rem;
+  margin: 1rem 0;
 }
 
 .preview-container h3 {
   font-size: 1.25rem; /* 원하는 크기로 설정 */
+  line-height: 1.05rem;
+  margin: 1rem 0;
 }
 
 .preview-container h4 {
   font-size: 1.1rem; /* 원하는 크기로 설정 */
+  line-height: 9.01rem;
+  margin: 1rem 0;
 }
 
 .preview-container h5 {
   font-size: 1rem; /* 원하는 크기로 설정 */
+  line-height: 0.8rem;
+  margin: 1rem 0;
 }
 
 .preview-container h6 {
   font-size: 0.9rem; /* 원하는 크기로 설정 */
+  line-height: 0.7rem;
+  margin: 1rem 0;
 }
 
 .preview-container blockquote {
@@ -66,4 +78,8 @@
 
 .preview-container img {
   border-radius: 10px;
+  width: 80%;
+  max-width: 800px;
+  min-width: 300px;
+  margin: 0 auto;
 }

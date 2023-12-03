@@ -11,6 +11,14 @@ export const getMyStudies = async (option?: string) => {
   }).then((res) => res.data);
 };
 
+export const getMyStudyDetail = async (boardNumber: number) => {
+  return await API.get(`/mystudy/${boardNumber}`, {
+    headers: {
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+  }).then((res) => res.data);
+};
+
 export const postMyStudy = async (data: MyStudyFormData) => {
   return await API.post("/mystudy/create", {
     headers: {
@@ -21,4 +29,34 @@ export const postMyStudy = async (data: MyStudyFormData) => {
     const resData: MyStudyPostResponse = res.data;
     return resData;
   });
+};
+
+export const patchMyStudy = async (
+  data: MyStudyFormData,
+  boardNumber: number
+) => {
+  return await API.patch(`/mystudy/${boardNumber}`, {
+    headers: {
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+    data: JSON.stringify(data),
+  }).then((res) => {
+    const resData: MyStudyPostResponse = res.data;
+    return resData;
+  });
+};
+
+export const deleteMyStudy = async (boardNumber: number) => {
+  return API.delete(`/mystudy/${boardNumber}`, {
+    headers: {
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+  })
+    .then((res) => {
+      const resData: MyStudyPostResponse = res.data;
+      return resData;
+    })
+    .catch((error) => {
+      return error;
+    });
 };
