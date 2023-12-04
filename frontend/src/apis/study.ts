@@ -20,11 +20,10 @@ export const getMyStudyDetail = async (boardNumber: number) => {
 };
 
 export const postMyStudy = async (data: MyStudyFormData) => {
-  return await API.post("/mystudy/create", {
+  return await API.post("/mystudy/create", JSON.stringify(data), {
     headers: {
       Authorization: `Bearer ${userInfo.token}`,
     },
-    data: JSON.stringify(data),
   }).then((res) => {
     const resData: MyStudyPostResponse = res.data;
     return resData;
@@ -35,11 +34,10 @@ export const patchMyStudy = async (
   data: MyStudyFormData,
   boardNumber: number
 ) => {
-  return await API.patch(`/mystudy/${boardNumber}`, {
+  return await API.patch(`/mystudy/${boardNumber}`, JSON.stringify(data), {
     headers: {
       Authorization: `Bearer ${userInfo.token}`,
     },
-    data: JSON.stringify(data),
   }).then((res) => {
     const resData: MyStudyPostResponse = res.data;
     return resData;

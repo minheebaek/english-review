@@ -12,6 +12,7 @@ import {
 } from "../types/interface";
 import { showToastByCode } from "../utils/response";
 import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const useMyStudiesQuery = () => {
   return useQuery<MyStudyGetResponse, AxiosError>({
@@ -32,6 +33,7 @@ export const useMyStudyDetailQuery = (boardNumber?: number) => {
 
 export const useMyStudyPostMutation = () => {
   const queryClient = useQueryClient();
+  const nav = useNavigate();
 
   return useMutation({
     mutationFn: (data: MyStudyFormData) => {
@@ -39,8 +41,11 @@ export const useMyStudyPostMutation = () => {
     },
 
     onSuccess(data, variables, context) {
-      console.log(data, variables, context);
-      queryClient.invalidateQueries({ queryKey: ["MyStudyQuery"] });
+      queryClient.invalidateQueries({
+        queryKey: ["MyStudyQuery", "MyStudyDetailQuery"],
+      });
+      showToastByCode("SU", "게시글을 작성하였습니다.");
+      nav(-1);
     },
 
     onError(error: any, variables, context) {
@@ -51,6 +56,7 @@ export const useMyStudyPostMutation = () => {
 
 export const useMyStudyPatchMutation = () => {
   const queryClient = useQueryClient();
+  const nav = useNavigate();
 
   return useMutation({
     mutationFn: ({
@@ -68,6 +74,8 @@ export const useMyStudyPatchMutation = () => {
       queryClient.invalidateQueries({
         queryKey: ["MyStudyQuery", "MyStudyDetailQuery"],
       });
+      showToastByCode("SU", "게시글을 수정하였습니다.");
+      nav(-1);
     },
 
     onError(error: any, variables, context) {
