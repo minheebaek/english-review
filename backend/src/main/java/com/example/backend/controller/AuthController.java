@@ -17,6 +17,13 @@ import javax.validation.Valid;
 public class AuthController {
     private final AuthService authService;
 
+    /**
+     * 회원가입
+     * localhost:8080/signup
+     *
+     * @parm requestBody
+     * @return response
+     */
     @PostMapping("/signup")
     public ResponseEntity<? super SignUpResponseDto> signUp(
             @RequestBody @Valid SignUpRequestDto requestBody
@@ -25,6 +32,13 @@ public class AuthController {
         return response;
     }
 
+    /**
+     * 로그인
+     * localhost:8080/signin
+     *
+     * @parm requestBody
+     * @return response
+     */
     @PostMapping("/signin")
     public ResponseEntity<? super SignInResponseDto> signIn(
         @RequestBody @Valid SignInRequestDto requestBody
