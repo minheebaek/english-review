@@ -4,32 +4,44 @@ import com.example.backend.common.ResponseCode;
 import com.example.backend.common.ResponseMessage;
 import com.example.backend.dto.response.ResponseDto;
 import com.example.backend.entity.BoardEntity;
+import com.example.backend.entity.TagEntity;
 import lombok.Getter;
-import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class GetBoardResponseDto extends ResponseDto {
     private int boardNumber;
     private String title;
     private String content;
+    private List<String> tagList;
     private String writeDatetime;
     private String writeremail;
     private boolean alarm;
 
-    private GetBoardResponseDto(BoardEntity boardEntity){
+    private GetBoardResponseDto(BoardEntity boardEntity,  List<TagEntity> tagEntities){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
+
+        List<String> tagList = new ArrayList<>();
+        for(TagEntity tagEntity: tagEntities){
+            String boardTag= tagEntity.getTag();
+            tagList.add(boardTag);
+        }
+
         this.boardNumber = boardEntity.getBoardNumber();
         this.title = boardEntity.getTitle();
         this.content = boardEntity.getContent();
+        this.tagList = tagList;
         this.writeDatetime = boardEntity.getWriteDatetime();
         this.writeremail = boardEntity.getWriterEmail();
         this.alarm = boardEntity.isAlarm();
     }
 
-    public static ResponseEntity<GetBoardResponseDto> success(BoardEntity boardEntity){
-        GetBoardResponseDto result = new GetBoardResponseDto(boardEntity);
+    public static ResponseEntity<GetBoardResponseDto> success(BoardEntity boardEntity, List<TagEntity> tagEntities){
+        GetBoardResponseDto result = new GetBoardResponseDto(boardEntity, tagEntities);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
     public static ResponseEntity<ResponseDto> notExistUser(){
