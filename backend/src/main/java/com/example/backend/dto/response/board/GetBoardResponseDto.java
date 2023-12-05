@@ -16,7 +16,7 @@ public class GetBoardResponseDto extends ResponseDto {
     private String content;
     private String writeDatetime;
     private String writeremail;
-    private boolean aram;
+    private boolean alarm;
 
     private GetBoardResponseDto(BoardEntity boardEntity){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
@@ -25,7 +25,7 @@ public class GetBoardResponseDto extends ResponseDto {
         this.content = boardEntity.getContent();
         this.writeDatetime = boardEntity.getWriteDatetime();
         this.writeremail = boardEntity.getWriterEmail();
-        this.aram = boardEntity.isAram();
+        this.alarm = boardEntity.isAlarm();
     }
 
     public static ResponseEntity<GetBoardResponseDto> success(BoardEntity boardEntity){

@@ -24,7 +24,7 @@ public class BoardEntity {
     private String content;
     private String writeDatetime;
     private String writerEmail;
-    private boolean aram;
+    private boolean alarm;
 
     public BoardEntity(PostBoardRequestDto dto, String email){
 
@@ -36,12 +36,12 @@ public class BoardEntity {
         this.content = dto.getContent();
         this.writeDatetime = writeDatetime;
         this.writerEmail = email;
-        this.aram = dto.isAram();
+        this.alarm = dto.isAlarm();
     }
 
     public void updateBoard(PatchBoardRequestDto dto){
         this.title = dto.getTitle();
         this.content = dto.getContent();
-        this.aram=dto.isAlarm();
+        this.alarm=dto.isAlarm();
     }
 }
