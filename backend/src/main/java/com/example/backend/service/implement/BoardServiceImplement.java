@@ -9,20 +9,27 @@ import com.example.backend.dto.response.board.GetBoardResponseDto;
 import com.example.backend.dto.response.board.PatchBoardResponseDto;
 import com.example.backend.dto.response.board.PostBoardResponseDto;
 import com.example.backend.entity.BoardEntity;
-import com.example.backend.entity.UserEntity;
+import com.example.backend.entity.TagEntity;
 import com.example.backend.repository.BoardRepository;
+import com.example.backend.repository.TagRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class BoardServiceImplement implements BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final  TagRepository tagRepository;
 
     @Override
     public ResponseEntity<? > deleteBoard(Integer boardNumber, String email) {
@@ -105,6 +112,15 @@ public class BoardServiceImplement implements BoardService {
             boardRepository.save(boardEntity);
 
             int boardNumber = boardEntity.getBoardNumber();
+            List<String> tagList = dto.getTagList();
+            List<TagEntity> tagEntities = new ArrayList<>();
+
+            for(String tag : tagList){
+                TagEntity tagEntity = new TagEntity(boardNumber, tag);
+                tagEntities.add(tagEntity);
+            }
+
+            tagRepository.saveAll(tagEntities);
 
         } catch (Exception exception) {
             exception.printStackTrace();

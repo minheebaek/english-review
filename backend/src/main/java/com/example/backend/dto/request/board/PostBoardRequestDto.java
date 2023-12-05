@@ -18,5 +18,7 @@ public class PostBoardRequestDto {
     @NotBlank
     private String content;
     @NotNull
+    private List<String> tagList;
+    @NotNull
     private boolean alarm;
 }
