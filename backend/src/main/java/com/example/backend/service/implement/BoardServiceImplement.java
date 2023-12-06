@@ -9,9 +9,11 @@ import com.example.backend.dto.response.board.GetBoardResponseDto;
 import com.example.backend.dto.response.board.PatchBoardResponseDto;
 import com.example.backend.dto.response.board.PostBoardResponseDto;
 import com.example.backend.entity.BoardEntity;
+import com.example.backend.entity.BoardTagMapEntity;
 import com.example.backend.entity.ImageEntity;
 import com.example.backend.entity.TagEntity;
 import com.example.backend.repository.BoardRepository;
+import com.example.backend.repository.BoardTagMapRepository;
 import com.example.backend.repository.TagRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.BoardService;
@@ -31,6 +33,7 @@ public class BoardServiceImplement implements BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
+    private final BoardTagMapRepository boardTagMapRepository;
 
     @Override
     public ResponseEntity<?> deleteBoard(Integer boardNumber, String email) {
@@ -65,6 +68,7 @@ public class BoardServiceImplement implements BoardService {
     @Override
     public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email) {
         BoardEntity boardEntity = null;
+
         try {
             boolean existedEmail = userRepository.existsByEmail(email);
             if (!existedEmail) return PatchBoardResponseDto.notExistUser();
@@ -73,7 +77,6 @@ public class BoardServiceImplement implements BoardService {
             if (boardEntity == null) return PatchBoardResponseDto.notExistBoard();
 
             if (!boardEntity.getWriterEmail().equals(email)) return PatchBoardResponseDto.notpermission();
-
             boardEntity.updateBoard(dto);
             boardRepository.save(boardEntity);
 
@@ -88,6 +91,7 @@ public class BoardServiceImplement implements BoardService {
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber, String email) {
         BoardEntity boardEntity = null;
         List<TagEntity> tagEntities = new ArrayList<>();
+
         try {
             boolean existedEmail = userRepository.existsByEmail(email);
             if (!existedEmail) return GetBoardResponseDto.notExistUser();
@@ -119,12 +123,20 @@ public class BoardServiceImplement implements BoardService {
             List<String> tagList = dto.getTagList();
             List<TagEntity> tagEntities = new ArrayList<>();
 
+            List<BoardTagMapEntity> boardTagMapEntities = new ArrayList<>();
+
             for (String tag : tagList) {
                 TagEntity tagEntity = new TagEntity(boardNumber, tag);
+                BoardTagMapEntity boardTagMapEntity = new BoardTagMapEntity();
                 tagEntities.add(tagEntity);
+                boardTagMapEntity.setBoardEntity(boardEntity);
+                boardTagMapEntity.setTagEntity(tagEntity);
+                boardTagMapEntities.add(boardTagMapEntity);
             }
 
             tagRepository.saveAll(tagEntities);
+            boardTagMapRepository.saveAll(boardTagMapEntities);
+
 
         } catch (Exception exception) {
             exception.printStackTrace();
