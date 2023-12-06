@@ -57,12 +57,6 @@ public class BoardServiceImplement implements BoardService {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(result);
             }
 
-
-            for(BoardTagMapEntity boardTagMapEntity : boardTagMapEntities){
-                boardTagMapEntities.add(boardTagMapEntity);
-            }
-            boardTagMapRepository.deleteAll(boardTagMapEntities);
-
             boardRepository.delete(boardEntity);
 
             tagEntities = tagRepository.findByBoardNumber(boardNumber);

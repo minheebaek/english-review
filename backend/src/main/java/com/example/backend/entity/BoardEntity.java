@@ -27,7 +27,7 @@ public class BoardEntity {
     private String writeDatetime;
     private String writerEmail;
     private boolean alarm;
-    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL)
     private List<BoardTagMapEntity> boardTagMapEntityList  = new ArrayList<>();
 
     public BoardEntity(PostBoardRequestDto dto, String email){
