@@ -10,7 +10,6 @@ import com.example.backend.dto.response.board.PatchBoardResponseDto;
 import com.example.backend.dto.response.board.PostBoardResponseDto;
 import com.example.backend.entity.BoardEntity;
 import com.example.backend.entity.BoardTagMapEntity;
-import com.example.backend.entity.ImageEntity;
 import com.example.backend.entity.TagEntity;
 import com.example.backend.repository.BoardRepository;
 import com.example.backend.repository.BoardTagMapRepository;
@@ -38,6 +37,8 @@ public class BoardServiceImplement implements BoardService {
     @Override
     public ResponseEntity<?> deleteBoard(Integer boardNumber, String email) {
         BoardEntity boardEntity = null;
+        List<TagEntity> tagEntities = new ArrayList<>();
+        List<BoardTagMapEntity> boardTagMapEntities = new ArrayList<>();
         try {
             boolean existedEmail = userRepository.existsByEmail(email);
             if (!existedEmail) {
@@ -56,7 +57,17 @@ public class BoardServiceImplement implements BoardService {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(result);
             }
 
+
+            for(BoardTagMapEntity boardTagMapEntity : boardTagMapEntities){
+                boardTagMapEntities.add(boardTagMapEntity);
+            }
+            boardTagMapRepository.deleteAll(boardTagMapEntities);
+
             boardRepository.delete(boardEntity);
+
+            tagEntities = tagRepository.findByBoardNumber(boardNumber);
+
+            tagRepository.deleteAll(tagEntities);
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
