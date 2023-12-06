@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -25,6 +27,8 @@ public class BoardEntity {
     private String writeDatetime;
     private String writerEmail;
     private boolean alarm;
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE)
+    private List<BoardTagMapEntity> boardTagMapEntityList  = new ArrayList<>();
 
     public BoardEntity(PostBoardRequestDto dto, String email){
 
@@ -44,4 +48,6 @@ public class BoardEntity {
         this.content = dto.getContent();
         this.alarm=dto.isAlarm();
     }
+
+
 }

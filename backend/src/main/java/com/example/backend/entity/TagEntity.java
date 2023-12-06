@@ -2,10 +2,13 @@ package com.example.backend.entity;
 
 
 
+import com.example.backend.dto.request.board.PatchBoardRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -19,7 +22,8 @@ public class TagEntity {
     private int boardNumber;
     @Column(name="tag_content")
     private String tag;
-
+    @OneToMany(mappedBy = "tagEntity")
+    private List<BoardTagMapEntity> boardTagMapEntityList  = new ArrayList<>();
 
     public TagEntity(int boardNumber, String tag){
         this.boardNumber = boardNumber;
