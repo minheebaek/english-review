@@ -9,27 +9,39 @@ import com.example.backend.dto.response.board.GetBoardResponseDto;
 import com.example.backend.dto.response.board.PatchBoardResponseDto;
 import com.example.backend.dto.response.board.PostBoardResponseDto;
 import com.example.backend.entity.BoardEntity;
-import com.example.backend.entity.UserEntity;
+import com.example.backend.entity.BoardTagMapEntity;
+import com.example.backend.entity.TagEntity;
 import com.example.backend.repository.BoardRepository;
+import com.example.backend.repository.BoardTagMapRepository;
+import com.example.backend.repository.TagRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class BoardServiceImplement implements BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final TagRepository tagRepository;
+    private final BoardTagMapRepository boardTagMapRepository;
 
     @Override
-    public ResponseEntity<? > deleteBoard(Integer boardNumber, String email) {
+    public ResponseEntity<?> deleteBoard(Integer boardNumber, String email) {
         BoardEntity boardEntity = null;
+        List<TagEntity> tagEntities = new ArrayList<>();
+        List<BoardTagMapEntity> boardTagMapEntities = new ArrayList<>();
         try {
             boolean existedEmail = userRepository.existsByEmail(email);
-            if (!existedEmail){
+            if (!existedEmail) {
                 ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_USER, ResponseMessage.NOT_EXISTED_USER);
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
             }
@@ -40,12 +52,16 @@ public class BoardServiceImplement implements BoardService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
             }
 
-            if(!boardEntity.getWriterEmail().equals(email)) {
+            if (!boardEntity.getWriterEmail().equals(email)) {
                 ResponseDto result = new ResponseDto(ResponseCode.NO_PERMISSION, ResponseMessage.NO_PERMISSION);
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(result);
             }
 
             boardRepository.delete(boardEntity);
+
+            tagEntities = tagRepository.findByBoardNumber(boardNumber);
+
+            tagRepository.deleteAll(tagEntities);
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
@@ -57,6 +73,9 @@ public class BoardServiceImplement implements BoardService {
     @Override
     public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email) {
         BoardEntity boardEntity = null;
+        List<TagEntity> tagEntities = new ArrayList<>();
+        List<BoardTagMapEntity> boardTagMapEntities = new ArrayList<>();
+
         try {
             boolean existedEmail = userRepository.existsByEmail(email);
             if (!existedEmail) return PatchBoardResponseDto.notExistUser();
@@ -64,10 +83,21 @@ public class BoardServiceImplement implements BoardService {
             boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null) return PatchBoardResponseDto.notExistBoard();
 
-            if(!boardEntity.getWriterEmail().equals(email)) return PatchBoardResponseDto.notpermission();
-
+            if (!boardEntity.getWriterEmail().equals(email)) return PatchBoardResponseDto.notpermission();
             boardEntity.updateBoard(dto);
             boardRepository.save(boardEntity);
+            boardTagMapEntities = boardTagMapRepository.findByBoardEntity(boardEntity);
+            for(BoardTagMapEntity boardTagMapEntity : boardTagMapEntities){
+                boardTagMapEntity.setBoardEntity(null);
+                boardTagMapEntity.setTagEntity(null);
+            }
+            List<String> tagList = dto.getTagList();
+            for (String tag : tagList) {
+                TagEntity tagEntity = new TagEntity(boardNumber, tag);
+                tagRepository.save(tagEntity);
+                boardTagMapRepository.save(new BoardTagMapEntity(tagEntity,boardEntity));
+            }
+
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -79,9 +109,13 @@ public class BoardServiceImplement implements BoardService {
     @Override
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber, String email) {
         BoardEntity boardEntity = null;
+        List<TagEntity> tagEntities = new ArrayList<>();
+
         try {
             boolean existedEmail = userRepository.existsByEmail(email);
-            if(!existedEmail) return GetBoardResponseDto.notExistUser();
+            if (!existedEmail) return GetBoardResponseDto.notExistUser();
+
+            tagEntities = tagRepository.findByBoardNumber(boardNumber);
 
             boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null) return GetBoardResponseDto.notExistBoard();
@@ -92,7 +126,7 @@ public class BoardServiceImplement implements BoardService {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return GetBoardResponseDto.success(boardEntity);
+        return GetBoardResponseDto.success(boardEntity, tagEntities);
     }
 
     @Override
@@ -105,6 +139,23 @@ public class BoardServiceImplement implements BoardService {
             boardRepository.save(boardEntity);
 
             int boardNumber = boardEntity.getBoardNumber();
+            List<String> tagList = dto.getTagList();
+            List<TagEntity> tagEntities = new ArrayList<>();
+
+            List<BoardTagMapEntity> boardTagMapEntities = new ArrayList<>();
+
+            for (String tag : tagList) {
+                TagEntity tagEntity = new TagEntity(boardNumber, tag);
+                BoardTagMapEntity boardTagMapEntity = new BoardTagMapEntity();
+                tagEntities.add(tagEntity);
+                boardTagMapEntity.setBoardEntity(boardEntity);
+                boardTagMapEntity.setTagEntity(tagEntity);
+                boardTagMapEntities.add(boardTagMapEntity);
+            }
+
+            tagRepository.saveAll(tagEntities);
+            boardTagMapRepository.saveAll(boardTagMapEntities);
+
 
         } catch (Exception exception) {
             exception.printStackTrace();
