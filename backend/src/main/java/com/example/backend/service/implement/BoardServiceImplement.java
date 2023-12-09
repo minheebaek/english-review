@@ -73,6 +73,8 @@ public class BoardServiceImplement implements BoardService {
     @Override
     public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email) {
         BoardEntity boardEntity = null;
+        List<TagEntity> tagEntities = new ArrayList<>();
+        List<BoardTagMapEntity> boardTagMapEntities = new ArrayList<>();
 
         try {
             boolean existedEmail = userRepository.existsByEmail(email);
@@ -84,6 +86,18 @@ public class BoardServiceImplement implements BoardService {
             if (!boardEntity.getWriterEmail().equals(email)) return PatchBoardResponseDto.notpermission();
             boardEntity.updateBoard(dto);
             boardRepository.save(boardEntity);
+            boardTagMapEntities = boardTagMapRepository.findByBoardEntity(boardEntity);
+            for(BoardTagMapEntity boardTagMapEntity : boardTagMapEntities){
+                boardTagMapEntity.setBoardEntity(null);
+                boardTagMapEntity.setTagEntity(null);
+            }
+            List<String> tagList = dto.getTagList();
+            for (String tag : tagList) {
+                TagEntity tagEntity = new TagEntity(boardNumber, tag);
+                tagRepository.save(tagEntity);
+                boardTagMapRepository.save(new BoardTagMapEntity(tagEntity,boardEntity));
+            }
+
 
         } catch (Exception exception) {
             exception.printStackTrace();

@@ -9,21 +9,25 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name="boardtagmap")
-@Table(name="boardtagmap")
+@Entity(name = "boardtagmap")
+@Table(name = "boardtagmap")
 public class BoardTagMapEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_tag_number")
-    private Long id;
+    private int id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name="board_number")
+    @JoinColumn(name = "board_number")
     private BoardEntity boardEntity;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name="tag_number")
+    @JoinColumn(name = "tag_number")
     private TagEntity tagEntity;
 
 
+    public BoardTagMapEntity (TagEntity tagEntity, BoardEntity boardEntity) {
+        this.tagEntity = tagEntity;
+        this.boardEntity = boardEntity;
+    }
 }
