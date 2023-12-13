@@ -1,30 +1,19 @@
 package com.example.backend.dto.response.auth;
 
-import com.example.backend.common.ResponseCode;
-import com.example.backend.common.ResponseMessage;
-import com.example.backend.dto.response.ResponseDto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.NoArgsConstructor;
 
 @Getter
-public class SignInResponseDto extends ResponseDto {
-    private String token;
-    private int expirationTime;
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SignInResponseDto {
+    private String accessToken;
+    private String refreshToken;
 
-    private SignInResponseDto(String token){
-        super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.token=token;
-        this.expirationTime=3600;
-    }
-
-    public static ResponseEntity<SignInResponseDto> success(String token){
-        SignInResponseDto result = new SignInResponseDto(token);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
-
-    public static ResponseEntity<ResponseDto> signInFailed(){
-        ResponseDto result = new ResponseDto(ResponseCode.SIGN_IN_FAIL, ResponseMessage.SIGN_IN_FAIL);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
-    }
+    private Long memberId;
+    private String nickname;
 }
