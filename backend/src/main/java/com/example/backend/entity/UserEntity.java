@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -16,15 +18,30 @@ import javax.persistence.Table;
 @Table(name = "user")
 public class UserEntity {
 
-    @Id
+    @Id // 이 필드가 Table의 PK.
+    @Column(name="member_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // userId는 자동으로 생성되도록 한다. 1,2,3,4
+    private Long memberId;
     private String email;
     private String password;
     private String nickname;
     private String profileImage;
+    @CreationTimestamp // 현재시간이 저장될 때 자동으로 생성.
+    private LocalDateTime regdate;
 
     public UserEntity(SignUpRequestDto dto) {
         this.email = dto.getEmail();
         this.password = dto.getPassword();
         this.nickname = dto.getNickname();
+    }
+    @Override
+    public String toString() {
+        return "User{" +
+                "memberId=" + memberId +
+                ", email='" + email + '\'' +
+                ", name='" + nickname + '\'' +
+                ", password='" + password + '\'' +
+                ", regdate=" + regdate +
+                '}';
     }
 }
