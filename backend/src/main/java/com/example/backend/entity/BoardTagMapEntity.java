@@ -31,3 +31,4 @@ public class BoardTagMapEntity {
         this.boardEntity = boardEntity;
     }
 }
+

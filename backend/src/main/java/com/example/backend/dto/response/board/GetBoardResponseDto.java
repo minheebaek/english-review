@@ -15,11 +15,11 @@ import java.util.List;
 @Getter
 public class GetBoardResponseDto extends ResponseDto {
     private int boardNumber;
+    private Long userId;
     private String title;
     private String content;
     private List<String> tagList;
     private String writeDatetime;
-    private String writeremail;
     private boolean alarm;
 
     private GetBoardResponseDto(BoardEntity boardEntity,  List<TagEntity> tagEntities){
@@ -32,11 +32,11 @@ public class GetBoardResponseDto extends ResponseDto {
         }
 
         this.boardNumber = boardEntity.getBoardNumber();
+        this.userId = boardEntity.getUserId();
         this.title = boardEntity.getTitle();
         this.content = boardEntity.getContent();
         this.tagList = tagList;
         this.writeDatetime = boardEntity.getWriteDatetime();
-        this.writeremail = boardEntity.getWriterEmail();
         this.alarm = boardEntity.isAlarm();
     }
 

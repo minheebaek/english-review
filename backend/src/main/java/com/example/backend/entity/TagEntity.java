@@ -2,7 +2,6 @@ package com.example.backend.entity;
 
 
 
-import com.example.backend.dto.request.board.PatchBoardRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -2,6 +2,8 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.response.user.GetSignInUserResponseDto;
 import com.example.backend.service.UserService;
+import com.example.backend.util.IfLogin;
+import com.example.backend.util.LoginUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,9 +27,9 @@ public class UserController {
      */
     @GetMapping("")
     public ResponseEntity<? super GetSignInUserResponseDto> getSignInUser(
-        @AuthenticationPrincipal String email
+            @IfLogin LoginUserDto loginUserDto
     ){
-        ResponseEntity<? super GetSignInUserResponseDto> response = userService.getSignInUser(email);
+        ResponseEntity<? super GetSignInUserResponseDto> response = userService.getSignInUser(loginUserDto.getEmail());
         return response;
     }
 }

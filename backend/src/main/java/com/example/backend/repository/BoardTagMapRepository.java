@@ -10,4 +10,5 @@ public interface BoardTagMapRepository extends JpaRepository<BoardTagMapEntity, 
 
 
     List<BoardTagMapEntity> findByBoardEntity(BoardEntity boardEntity);
+
 }

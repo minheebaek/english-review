@@ -19,7 +19,7 @@ public class CorsConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers){
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new IfLoginArgumentResolver());
     }
 }

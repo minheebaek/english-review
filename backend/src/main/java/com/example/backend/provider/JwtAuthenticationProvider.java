@@ -2,6 +2,7 @@ package com.example.backend.provider;
 
 import com.example.backend.token.JwtAuthenticationToken;
 import com.example.backend.util.JwtTokenizer;
+import com.example.backend.util.LoginInfoDto;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -26,14 +27,24 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         Claims claims = jwtTokenizer.parseAccessToken(authenticationToken.getToken());
         // sub에 암호화된 데이터를 집어넣고, 복호화하는 코드를 넣어줄 수 있다.
         String email = claims.getSubject();
+        Long userId = claims.get("userId", Long.class);
+        String nickname = claims.get("nickname", String.class);
         List<GrantedAuthority> authorities = getGrantedAuthorities(claims);
 
-        return new JwtAuthenticationToken(authorities, email, null);
+        LoginInfoDto loginInfo = new LoginInfoDto();
+        loginInfo.setUserId(userId);
+        loginInfo.setEmail(email);
+        loginInfo.setNickname(nickname);
+
+        return new JwtAuthenticationToken(authorities, loginInfo, null);
     }
 
     private List<GrantedAuthority> getGrantedAuthorities(Claims claims) {
+        //List<String> roles = (List<String>) claims.get("roles");
         List<GrantedAuthority> authorities = new ArrayList<>();
-
+        /*for (String role : roles) {
+            authorities.add(()-> role);
+        }*/
         return authorities;
     }
 

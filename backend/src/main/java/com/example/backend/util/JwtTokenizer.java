@@ -2,7 +2,6 @@ package com.example.backend.util;
 
 
 import io.jsonwebtoken.Claims;
-
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -32,23 +31,24 @@ public class JwtTokenizer {
     /**
      * AccessToken 생성
      */
-    public String createAccessToken(Long id, String email) {
-        return createToken(id, email,ACCESS_TOKEN_EXPIRE_COUNT, accessSecret);
+    public String createAccessToken(Long id, String email, String nickname) {
+        return createToken(id, email, nickname, ACCESS_TOKEN_EXPIRE_COUNT, accessSecret);
     }
 
     /**
      * RefreshToken 생성
      */
-    public String createRefreshToken(Long id, String email) {
-        return createToken(id, email, REFRESH_TOKEN_EXPIRE_COUNT, refreshSecret);
+    public String createRefreshToken(Long id, String email, String nickname) {
+        return createToken(id, email, nickname, REFRESH_TOKEN_EXPIRE_COUNT, refreshSecret);
     }
 
 
-    private String createToken(Long id, String email,
+    private String createToken(Long id, String email, String nickname,
                                Long expire, byte[] secretKey) {
         Claims claims = Jwts.claims().setSubject(email);
 
         claims.put("userId", id);
+        claims.put("nickname", nickname);
 
         return Jwts.builder()
                 .setClaims(claims)

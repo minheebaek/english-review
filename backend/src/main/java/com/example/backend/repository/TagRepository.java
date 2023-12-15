@@ -10,4 +10,7 @@ import java.util.List;
 public interface TagRepository extends JpaRepository<TagEntity, Integer> {
 
     List<TagEntity> findByBoardNumber(Integer boardNumber);
+
+
+
 }

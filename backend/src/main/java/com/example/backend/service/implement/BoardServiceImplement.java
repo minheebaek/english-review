@@ -35,12 +35,12 @@ public class BoardServiceImplement implements BoardService {
     private final BoardTagMapRepository boardTagMapRepository;
 
     @Override
-    public ResponseEntity<?> deleteBoard(Integer boardNumber, String email) {
+    public ResponseEntity<?> deleteBoard(Integer boardNumber, Long userId) {
         BoardEntity boardEntity = null;
         List<TagEntity> tagEntities = new ArrayList<>();
         List<BoardTagMapEntity> boardTagMapEntities = new ArrayList<>();
         try {
-            boolean existedEmail = userRepository.existsByEmail(email);
+            boolean existedEmail = userRepository.existsByUserId(userId);
             if (!existedEmail) {
                 ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_USER, ResponseMessage.NOT_EXISTED_USER);
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
@@ -52,16 +52,17 @@ public class BoardServiceImplement implements BoardService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
             }
 
-            if (!boardEntity.getWriterEmail().equals(email)) {
+            if (!boardEntity.getUserId().equals(userId)) {
                 ResponseDto result = new ResponseDto(ResponseCode.NO_PERMISSION, ResponseMessage.NO_PERMISSION);
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(result);
             }
-
+            boardTagMapEntities = boardTagMapRepository.findByBoardEntity(boardEntity);
+            boardTagMapRepository.deleteAll(boardTagMapEntities);
+            tagEntities = tagRepository.findByBoardNumber(boardNumber);
+            tagRepository.deleteAll(tagEntities);
             boardRepository.delete(boardEntity);
 
-            tagEntities = tagRepository.findByBoardNumber(boardNumber);
 
-            tagRepository.deleteAll(tagEntities);
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
@@ -71,31 +72,36 @@ public class BoardServiceImplement implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email) {
+    public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, Long userId) {
         BoardEntity boardEntity = null;
         List<TagEntity> tagEntities = new ArrayList<>();
         List<BoardTagMapEntity> boardTagMapEntities = new ArrayList<>();
 
+
         try {
-            boolean existedEmail = userRepository.existsByEmail(email);
+            boolean existedEmail = userRepository.existsByUserId(userId);
             if (!existedEmail) return PatchBoardResponseDto.notExistUser();
 
             boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null) return PatchBoardResponseDto.notExistBoard();
 
-            if (!boardEntity.getWriterEmail().equals(email)) return PatchBoardResponseDto.notpermission();
+            if (!boardEntity.getUserId().equals(userId)) return PatchBoardResponseDto.notpermission();
             boardEntity.updateBoard(dto);
             boardRepository.save(boardEntity);
             boardTagMapEntities = boardTagMapRepository.findByBoardEntity(boardEntity);
-            for(BoardTagMapEntity boardTagMapEntity : boardTagMapEntities){
+            for (BoardTagMapEntity boardTagMapEntity : boardTagMapEntities) {
+
                 boardTagMapEntity.setBoardEntity(null);
                 boardTagMapEntity.setTagEntity(null);
+
             }
             List<String> tagList = dto.getTagList();
             for (String tag : tagList) {
+
                 TagEntity tagEntity = new TagEntity(boardNumber, tag);
                 tagRepository.save(tagEntity);
-                boardTagMapRepository.save(new BoardTagMapEntity(tagEntity,boardEntity));
+                boardTagMapRepository.save(new BoardTagMapEntity(tagEntity, boardEntity));
+
             }
 
 
@@ -107,12 +113,12 @@ public class BoardServiceImplement implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber, String email) {
+    public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber, Long userId) {
         BoardEntity boardEntity = null;
         List<TagEntity> tagEntities = new ArrayList<>();
 
         try {
-            boolean existedEmail = userRepository.existsByEmail(email);
+            boolean existedEmail = userRepository.existsByUserId(userId);
             if (!existedEmail) return GetBoardResponseDto.notExistUser();
 
             tagEntities = tagRepository.findByBoardNumber(boardNumber);
@@ -120,7 +126,7 @@ public class BoardServiceImplement implements BoardService {
             boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null) return GetBoardResponseDto.notExistBoard();
 
-            if (!boardEntity.getWriterEmail().equals(email)) return GetBoardResponseDto.notPermission();
+            if (!boardEntity.getUserId().equals(userId)) return GetBoardResponseDto.notPermission();
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -130,12 +136,12 @@ public class BoardServiceImplement implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
+    public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, Long userId) {
         try {
-            boolean existedEmail = userRepository.existsByEmail(email);
+            boolean existedEmail = userRepository.existsByUserId(userId);
             if (!existedEmail) return PostBoardResponseDto.notExistUser();
 
-            BoardEntity boardEntity = new BoardEntity(dto, email);
+            BoardEntity boardEntity = new BoardEntity(dto, userId);
             boardRepository.save(boardEntity);
 
             int boardNumber = boardEntity.getBoardNumber();

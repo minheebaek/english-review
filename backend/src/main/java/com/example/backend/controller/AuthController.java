@@ -1,6 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.request.RefreshTokenDto;
+import com.example.backend.dto.RefreshTokenDto;
 import com.example.backend.dto.request.auth.SignInRequestDto;
 import com.example.backend.dto.request.auth.SignUpRequestDto;
 import com.example.backend.dto.response.auth.SignInResponseDto;
@@ -19,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -63,18 +62,18 @@ public class AuthController {
         }
 
         // JWT토큰을 생성하였다. jwt라이브러리를 이용하여 생성.
-        String accessToken = jwtTokenizer.createAccessToken(userEntity.getMemberId(), userEntity.getEmail());
-        String refreshToken = jwtTokenizer.createRefreshToken(userEntity.getMemberId(), userEntity.getEmail());
+        String accessToken = jwtTokenizer.createAccessToken(userEntity.getUserId(), userEntity.getEmail(), userEntity.getNickname());
+        String refreshToken = jwtTokenizer.createRefreshToken(userEntity.getUserId(), userEntity.getEmail(), userEntity.getNickname());
 
         RefreshToken refreshTokenEntity = new RefreshToken();
         refreshTokenEntity.setValue(refreshToken);
-        refreshTokenEntity.setMemberId(userEntity.getMemberId());
+        refreshTokenEntity.setUserId(userEntity.getUserId());
         refreshTokenService.addRefreshToken(refreshTokenEntity);
 
         SignInResponseDto signInResponseDto = SignInResponseDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .memberId(userEntity.getMemberId())
+                .userId(userEntity.getUserId())
                 .nickname(userEntity.getNickname())
                 .build();
         return new ResponseEntity(signInResponseDto, HttpStatus.OK);
@@ -103,12 +102,12 @@ public class AuthController {
 
         String email = claims.getSubject();
 
-        String accessToken = jwtTokenizer.createAccessToken(userId, email);
+        String accessToken = jwtTokenizer.createAccessToken(userId, email, userEntity.getNickname());
 
         SignInResponseDto signInResponseDto = SignInResponseDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshTokenDto.getRefreshToken())
-                .memberId(userEntity.getMemberId())
+                .userId(userEntity.getUserId())
                 .nickname(userEntity.getNickname())
                 .build();
         return new ResponseEntity(signInResponseDto, HttpStatus.OK);

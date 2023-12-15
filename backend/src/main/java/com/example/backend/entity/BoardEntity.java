@@ -22,15 +22,15 @@ public class BoardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int boardNumber;
+    private Long userId;
     private String title;
     private String content;
     private String writeDatetime;
-    private String writerEmail;
     private boolean alarm;
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL)
     private List<BoardTagMapEntity> boardTagMapEntityList  = new ArrayList<>();
 
-    public BoardEntity(PostBoardRequestDto dto, String email){
+    public BoardEntity(PostBoardRequestDto dto, Long userId){
 
         Date now = Date.from(Instant.now());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -39,7 +39,7 @@ public class BoardEntity {
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.writeDatetime = writeDatetime;
-        this.writerEmail = email;
+        this.userId = userId;
         this.alarm = dto.isAlarm();
     }
 

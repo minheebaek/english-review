@@ -19,9 +19,9 @@ import java.time.LocalDateTime;
 public class UserEntity {
 
     @Id // 이 필드가 Table의 PK.
-    @Column(name="member_id")
+    @Column(name="user_Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY) // userId는 자동으로 생성되도록 한다. 1,2,3,4
-    private Long memberId;
+    private Long userId;
     private String email;
     private String password;
     private String nickname;
@@ -37,7 +37,7 @@ public class UserEntity {
     @Override
     public String toString() {
         return "User{" +
-                "memberId=" + memberId +
+                "userId=" + userId +
                 ", email='" + email + '\'' +
                 ", name='" + nickname + '\'' +
                 ", password='" + password + '\'' +

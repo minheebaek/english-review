@@ -6,6 +6,8 @@ import com.example.backend.dto.response.board.GetBoardResponseDto;
 import com.example.backend.dto.response.board.PatchBoardResponseDto;
 import com.example.backend.dto.response.board.PostBoardResponseDto;
 import com.example.backend.service.BoardService;
+import com.example.backend.util.IfLogin;
+import com.example.backend.util.LoginUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,9 +31,9 @@ public class BoardController {
     @DeleteMapping("/{boardNumber}")
     public ResponseEntity<?> deleteBoard(
             @PathVariable ("boardNumber") Integer boardNumber,
-            @AuthenticationPrincipal String email
+            @IfLogin LoginUserDto loginUserDto
     ){
-        ResponseEntity<?> response = boardService.deleteBoard(boardNumber, email);
+        ResponseEntity<?> response = boardService.deleteBoard(boardNumber, loginUserDto.getUserId());
         return response;
     }
 
@@ -49,9 +51,9 @@ public class BoardController {
     public ResponseEntity<? super PatchBoardResponseDto> patchBoard(
             @RequestBody @Valid PatchBoardRequestDto requestBody,
             @PathVariable("boardNumber") Integer boardNumber,
-            @AuthenticationPrincipal String email
+            @IfLogin LoginUserDto loginUserDto
     ){
-        ResponseEntity<? super PatchBoardResponseDto> response = boardService.patchBoard(requestBody, boardNumber, email);
+        ResponseEntity<? super PatchBoardResponseDto> response = boardService.patchBoard(requestBody, boardNumber, loginUserDto.getUserId());
         return response;
     }
 
@@ -65,9 +67,9 @@ public class BoardController {
     @GetMapping("/{boardNumber}")
     public ResponseEntity<? super GetBoardResponseDto> getBoard(
             @PathVariable("boardNumber") Integer boardNumber,
-            @AuthenticationPrincipal String email
+            @IfLogin LoginUserDto loginUserDto
     ){
-        ResponseEntity<? super GetBoardResponseDto> response = boardService.getBoard(boardNumber, email);
+        ResponseEntity<? super GetBoardResponseDto> response = boardService.getBoard(boardNumber, loginUserDto.getUserId());
         return response;
     }
 
@@ -82,9 +84,10 @@ public class BoardController {
     @PostMapping("/create")
     public ResponseEntity<? super PostBoardResponseDto> postBoard(
             @RequestBody @Valid PostBoardRequestDto requestBody,
-            @AuthenticationPrincipal String email
-            ){
-        ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard(requestBody, email);
+            @IfLogin LoginUserDto loginUserDto
+    ){
+        ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard(requestBody, loginUserDto.getUserId());
         return response;
     }
 }
+

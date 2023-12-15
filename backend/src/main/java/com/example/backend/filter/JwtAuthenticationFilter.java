@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -73,8 +74,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private void getAuthentication(String token) {
         JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(token);
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-        SecurityContextHolder.getContext()
-                .setAuthentication(authenticate);
+        // 이 객체에는 JWT안의 내용을 가지고 로그인 id,role
+
+        SecurityContextHolder.getContext().setAuthentication(authenticate); // 현재 요청에서 언제든지 인증정보를 꺼낼 수 있도록 해준다.
     }
 
     private String getToken(HttpServletRequest request) {
